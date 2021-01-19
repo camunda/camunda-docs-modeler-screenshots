@@ -1,0 +1,27 @@
+{
+  "workspace": {
+    "endpoints": [],
+    "layout": {
+      "dmnOverview": {
+        "open": false
+      },
+      "log": {
+        "open": false
+      },
+      "propertiesPanel": {
+        "open": false,
+        "width": 420
+        }
+    }
+  },
+  "window": {
+    "fullScreen": false,
+    "maximize": false,
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 1100,
+      "height": 550
+    }
+  }
+}
