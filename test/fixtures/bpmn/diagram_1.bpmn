@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0dv3vdv" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.3.0">
+  <bpmn:process id="Process_0jsms8n" isExecutable="true">
+    <bpmn:startEvent id="Event_1op189v">
+      <bpmn:outgoing>Flow_0rok0en</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0rok0en" sourceRef="Event_1op189v" targetRef="Activity_0xpbbro" />
+    <bpmn:exclusiveGateway id="invoiceValidGateway" name="Invoice valid?">
+      <bpmn:incoming>Flow_0o3khde</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z6drel</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0k2o7m0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0o3khde" sourceRef="Activity_0xpbbro" targetRef="invoiceValidGateway" />
+    <bpmn:userTask id="Activity_0xpbbro" name="Review Invoice">
+      <bpmn:incoming>Flow_0rok0en</bpmn:incoming>
+      <bpmn:outgoing>Flow_0o3khde</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:task id="Activity_1qz9sdr">
+      <bpmn:incoming>Flow_0z6drel</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0z6drel" sourceRef="invoiceValidGateway" targetRef="Activity_1qz9sdr" />
+    <bpmn:task id="Activity_1bey5bv">
+      <bpmn:incoming>Flow_0k2o7m0</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_0k2o7m0" sourceRef="invoiceValidGateway" targetRef="Activity_1bey5bv" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0jsms8n">
+      <bpmndi:BPMNEdge id="Flow_0rok0en_di" bpmnElement="Flow_0rok0en">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0o3khde_di" bpmnElement="Flow_0o3khde">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="425" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z6drel_di" bpmnElement="Flow_0z6drel">
+        <di:waypoint x="475" y="120" />
+        <di:waypoint x="530" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k2o7m0_di" bpmnElement="Flow_0k2o7m0">
+        <di:waypoint x="450" y="145" />
+        <di:waypoint x="450" y="230" />
+        <di:waypoint x="530" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1op189v_di" bpmnElement="Event_1op189v">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="invoiceValidGateway_di" bpmnElement="invoiceValidGateway" isMarkerVisible="true">
+        <dc:Bounds x="425" y="95" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1eye3tp_di" bpmnElement="Activity_0xpbbro">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qz9sdr_di" bpmnElement="Activity_1qz9sdr">
+        <dc:Bounds x="530" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bey5bv_di" bpmnElement="Activity_1bey5bv">
+        <dc:Bounds x="530" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

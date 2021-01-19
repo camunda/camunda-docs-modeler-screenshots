@@ -1,0 +1,37 @@
+{
+  "name": "@camunda/camunda-docs-modeler-screenshots",
+  "version": "0.1.0",
+  "description": "Update the docs screenshots of the Camunda Modeler",
+  "scripts": {
+    "pull:modeler": "git -C camunda-modeler pull || git clone git@github.com:camunda/camunda-modeler.git camunda-modeler",
+    "pull:docs": "git -C camunda-docs-manual pull || git clone git@github.com:camunda/camunda-docs-manual.git camunda-docs-manual",
+    "build:modeler": "(cd camunda-modeler && npm i && npm run build)",
+    "screenshots": "node lib/takeScreenshots.js",
+    "test": "mocha --recursive test/spec",
+    "lint": "eslint .",
+    "pull": "run-p pull:*",
+    "start": "run-s lint pull build:modeler test screenshots"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/camunda/camunda-docs-modeler-screenshots.git"
+  },
+  "author": "Max Trumpf (https://github.com/MaxTru)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/camunda/camunda-docs-modeler-screenshots/issues"
+  },
+  "homepage": "https://github.com/camunda/camunda-docs-modeler-screenshots",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.18.0",
+    "eslint-plugin-bpmn-io": "^0.11.0",
+    "fkill": "^7.1.0",
+    "mkdirp": "^1.0.4",
+    "mocha": "^8.2.1",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "sharp": "^0.27.0",
+    "spectron": "^9.0.0"
+  }
+}
