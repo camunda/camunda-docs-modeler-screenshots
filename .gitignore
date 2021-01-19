@@ -1,0 +1,10 @@
+camunda-modeler/
+camunda-docs-manual/
+lib/tmp/
+node_modules/
+dist/
+coverage/
+.idea
+*.iml
+.DS_Store
+.nyc_output

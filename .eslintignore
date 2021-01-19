@@ -1,0 +1,5 @@
+*.json
+.nyc_output
+coverage
+camunda-modeler/
+camunda-docs-manual/
