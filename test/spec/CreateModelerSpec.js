@@ -5,6 +5,8 @@ const expect = require('chai').expect;
 
 const createModeler = require('../../lib/helper/createModeler');
 
+const TMP_DIR = 'lib/tmp';
+
 
 describe('CreateModeler initialization', function() {
 
@@ -14,6 +16,8 @@ describe('CreateModeler initialization', function() {
 
   afterEach(async () => {
     await modeler.close();
+
+    fs.rmdirSync(TMP_DIR, { recursive: true });
   });
 
 
@@ -51,7 +55,7 @@ describe('CreateModeler initialization', function() {
     modeler = await createModeler(diagramPaths);
 
     // then
-    const tmpDir = fs.readdirSync('lib/tmp');
+    const tmpDir = fs.readdirSync(TMP_DIR);
     expect(tmpDir.length).equals(2);
   });
 
@@ -87,7 +91,7 @@ describe('CreateModeler tearDown', function() {
     await modeler.close();
 
     // then
-    const tmpDir = fs.readdirSync('lib/tmp');
+    const tmpDir = fs.readdirSync(TMP_DIR);
     expect(tmpDir.length).equals(0);
   });
 
