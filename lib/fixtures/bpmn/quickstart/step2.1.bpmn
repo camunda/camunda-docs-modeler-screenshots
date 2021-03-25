@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_03qvj40" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <bpmn:process id="payment-retrival" name="Payment Retrival" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Payment Retrival Requested">
+      <bpmn:outgoing>flow1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="flow1" sourceRef="StartEvent_1" targetRef="userTask" />
+    <bpmn:serviceTask id="serviceTask1" name="Charge Credit Card" camunda:type="external" camunda:topic="charge-card">
+      <bpmn:incoming>Flow_1vtymh6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ln7eeh</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="endEvent1" name="Payment Received">
+      <bpmn:incoming>Flow_1ln7eeh</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1ln7eeh" sourceRef="serviceTask1" targetRef="endEvent1" />
+    <bpmn:task id="userTask">
+      <bpmn:incoming>flow1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vtymh6</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_1vtymh6" sourceRef="userTask" targetRef="serviceTask1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="payment-retrival">
+      <bpmndi:BPMNEdge id="Flow_168spo2_di" bpmnElement="flow1">
+        <di:waypoint x="215" y="97" />
+        <di:waypoint x="270" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ln7eeh_di" bpmnElement="Flow_1ln7eeh">
+        <di:waypoint x="540" y="97" />
+        <di:waypoint x="602" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vtymh6_di" bpmnElement="Flow_1vtymh6">
+        <di:waypoint x="370" y="97" />
+        <di:waypoint x="440" y="97" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="79" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="155" y="122" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02faqyi_di" bpmnElement="serviceTask1">
+        <dc:Bounds x="440" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_19yjvre_di" bpmnElement="endEvent1">
+        <dc:Bounds x="602" y="79" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="597" y="122" width="46" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1apk1ze_di" bpmnElement="userTask">
+        <dc:Bounds x="270" y="57" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
