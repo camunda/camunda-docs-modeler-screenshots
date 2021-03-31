@@ -1,0 +1,28 @@
+{
+  "type": "default",
+  "components": [
+    {
+      "key": "customerID",
+      "label": "Customer",
+      "type": "textfield",
+      "validate": {
+        "pattern": "C-[0-9]*",
+        "required": true
+      },
+      "description": "Customer ID in format <C-123>"
+    },
+    {
+      "key": "creditLimit",
+      "label": "Credit Limit",
+      "type": "textfield",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "key": "button1",
+      "label": "Update Customer",
+      "type": "button"
+    }
+  ]
+}
