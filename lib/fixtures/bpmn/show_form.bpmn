@@ -6,6 +6,12 @@
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_10fbpk4" sourceRef="StartEvent_1" targetRef="Activity_0qkkllp" />
     <bpmn:userTask id="Activity_0qkkllp" name="Show Form" camunda:formKey="camunda-forms:deployment:FORM_NAME.form">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="formKeyA">My Default Value</camunda:inputParameter>
+          <camunda:outputParameter name="myProcessVariableName">${ formKeyA }</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_10fbpk4</bpmn:incoming>
       <bpmn:outgoing>Flow_00lommb</bpmn:outgoing>
     </bpmn:userTask>
