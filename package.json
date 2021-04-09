@@ -11,7 +11,8 @@
     "test": "mocha --recursive test/spec",
     "lint": "eslint .",
     "pull": "run-p pull:*",
-    "start": "run-s lint pull build:modeler test screenshots"
+    "start": "run-s lint pull build:modeler test screenshots",
+    "all": "run-s lint pull build:modeler test"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
   "dependencies": {
     "chai": "^4.2.0",
     "eslint": "^7.18.0",
-    "eslint-plugin-bpmn-io": "^0.11.0",
+    "eslint-plugin-bpmn-io": "^0.12.0",
     "fkill": "^7.1.0",
     "mkdirp": "^1.0.4",
     "mocha": "^8.2.1",
