@@ -17,7 +17,7 @@ describe('CreateModeler initialization', function() {
   afterEach(async () => {
     await modeler.close();
 
-    fs.rmdirSync(TMP_DIR, { recursive: true });
+    fs.rmSync(TMP_DIR, { recursive: true });
   });
 
 
@@ -28,21 +28,6 @@ describe('CreateModeler initialization', function() {
 
     // then
     expect(modeler.app.running).to.be.true;
-  });
-
-
-  it('should open a Modeler instance with custom configuration', async () => {
-
-    // given
-    const configPath = path.join(__dirname, '../fixtures/user-data/small_width.json');
-
-    // when
-    modeler = await createModeler(undefined, configPath);
-
-    // then
-    const dimensions = await modeler.app.client.waitUntilWindowLoaded()
-      .browserWindow.getBounds();
-    expect(dimensions.width).to.equal(99);
   });
 
 
@@ -57,6 +42,25 @@ describe('CreateModeler initialization', function() {
     // then
     const tmpDir = fs.readdirSync(TMP_DIR);
     expect(tmpDir.length).equals(2);
+  });
+
+
+  it('should open a Modeler instance with custom configuration', async () => {
+
+    // given
+    const diagramPaths = [ path.join(__dirname, '../fixtures/bpmn/diagram_1.bpmn') ],
+          configPath = path.join(__dirname, '../fixtures/user-data/large_with_prop_panel.json');
+
+    // when
+    modeler = await createModeler(diagramPaths, configPath);
+
+    // then
+    const propPanelContainer = await modeler.getElement('.bpp-properties-tabs-container');
+    const propPanelSize = await propPanelContainer.getSize();
+
+    // Note: the width is 16px smaller than what is specified in the config,
+    // cause of the propertiesPanel handler element
+    expect(propPanelSize.width).to.equal(404);
   });
 
 });
