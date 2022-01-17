@@ -55,12 +55,10 @@ describe('CreateModeler initialization', function() {
     modeler = await createModeler(diagramPaths, configPath);
 
     // then
-    const propPanelContainer = await modeler.getElement('.bpp-properties-tabs-container');
+    const propPanelContainer = await modeler.getElement('.properties-container');
     const propPanelSize = await propPanelContainer.getSize();
 
-    // Note: the width is 16px smaller than what is specified in the config,
-    // cause of the propertiesPanel handler element
-    expect(propPanelSize.width).to.equal(404);
+    expect(propPanelSize.width).to.equal(420);
   });
 
 });
