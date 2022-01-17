@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_03qvj40" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_03qvj40" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.12.0">
   <bpmn:process id="payment-retrival" name="Payment Retrival" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1" name="Payment Retrival Requested">
       <bpmn:outgoing>flow1</bpmn:outgoing>
@@ -14,12 +14,7 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1ln7eeh" sourceRef="serviceTask1" targetRef="endEvent1" />
     <bpmn:sequenceFlow id="Flow_1vtymh6" sourceRef="userTask" targetRef="serviceTask1" />
-    <bpmn:userTask id="userTask" name="Approve Payment" camunda:assignee="demo">
-      <bpmn:extensionElements>
-        <camunda:formData>
-          <camunda:formField id="FormField_09ahitr" />
-        </camunda:formData>
-      </bpmn:extensionElements>
+    <bpmn:userTask id="userTask" name="Approve Payment" camunda:formRef="payment-form" camunda:formRefBinding="latest" camunda:assignee="demo">
       <bpmn:incoming>flow1</bpmn:incoming>
       <bpmn:outgoing>Flow_1vtymh6</bpmn:outgoing>
     </bpmn:userTask>
