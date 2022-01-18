@@ -1,6 +1,7 @@
 camunda-modeler/
 camunda-docs-manual/
 camunda-docs-static/
+camunda-cloud-documentation/
 lib/tmp/
 node_modules/
 dist/
