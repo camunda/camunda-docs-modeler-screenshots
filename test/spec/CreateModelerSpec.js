@@ -37,7 +37,7 @@ describe('CreateModeler initialization', function() {
     const diagramPaths = [ path.join(__dirname, '../fixtures/bpmn/diagram_1.bpmn') ];
 
     // when
-    modeler = await createModeler(diagramPaths);
+    modeler = await createModeler({ diagramPaths });
 
     // then
     const tmpDir = fs.readdirSync(TMP_DIR);
@@ -52,7 +52,7 @@ describe('CreateModeler initialization', function() {
           configPath = path.join(__dirname, '../fixtures/user-data/large_with_prop_panel.json');
 
     // when
-    modeler = await createModeler(diagramPaths, configPath);
+    modeler = await createModeler({ diagramPaths, configPath });
 
     // then
     const propPanelContainer = await modeler.getElement('.properties-container');
@@ -60,6 +60,23 @@ describe('CreateModeler initialization', function() {
 
     expect(propPanelSize.width).to.equal(420);
   });
+
+
+  it('should open a Modeler instance with custom displayVersion', async () => {
+
+    // given
+    const displayVersion = 'foobar';
+
+    // when
+    modeler = await createModeler({ displayVersion });
+
+    // then
+    const versionButton = await modeler.getElement('button[title="Toggle version info"]');
+    const versionButtonText = await versionButton.getText();
+
+    expect(versionButtonText).to.equal(displayVersion);
+  });
+
 
 });
 
@@ -88,7 +105,7 @@ describe('CreateModeler tearDown', function() {
           configPath = path.join(__dirname, '../fixtures/user-data/small_width.json');
 
     // when
-    const modeler = await createModeler(diagramPaths, configPath);
+    const modeler = await createModeler({ diagramPaths, configPath });
 
     await modeler.close();
 
