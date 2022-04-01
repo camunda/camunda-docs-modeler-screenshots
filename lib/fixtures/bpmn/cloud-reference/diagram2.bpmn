@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0eyysa7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="1.3.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0eyysa7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.0.0-alpha.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="1.3.0">
   <bpmn:process id="Process_0h11kbu" name="Quick Start" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1crfeeu</bpmn:outgoing>
@@ -10,6 +10,9 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0tfxrdb" sourceRef="serviceTask_1" targetRef="Event_1bwwwx5" />
     <bpmn:serviceTask id="serviceTask_1" name="My Service Task">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="fo" retries="3" />
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_1crfeeu</bpmn:incoming>
       <bpmn:outgoing>Flow_0tfxrdb</bpmn:outgoing>
     </bpmn:serviceTask>
