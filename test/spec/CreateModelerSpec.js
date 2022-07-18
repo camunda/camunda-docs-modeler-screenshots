@@ -27,7 +27,7 @@ describe('CreateModeler initialization', function() {
     modeler = await createModeler();
 
     // then
-    expect(modeler.app.running).to.be.true;
+    expect(modeler.window).to.exist;
   });
 
 
@@ -56,7 +56,7 @@ describe('CreateModeler initialization', function() {
 
     // then
     const propPanelContainer = await modeler.getElement('.properties-container');
-    const propPanelSize = await propPanelContainer.getSize();
+    const propPanelSize = await propPanelContainer.boundingBox();
 
     expect(propPanelSize.width).to.equal(420);
   });
@@ -72,7 +72,7 @@ describe('CreateModeler initialization', function() {
 
     // then
     const versionButton = await modeler.getElement('button[title="Toggle version info"]');
-    const versionButtonText = await versionButton.getText();
+    const versionButtonText = await versionButton.innerText();
 
     expect(versionButtonText).to.equal(displayVersion);
   });
@@ -94,7 +94,7 @@ describe('CreateModeler tearDown', function() {
     await modeler.close();
 
     // then
-    expect(modeler.app.running).to.be.false;
+    expect(modeler.window).to.not.exist;
   });
 
 
