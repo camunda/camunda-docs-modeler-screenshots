@@ -7,7 +7,7 @@
     "pull:docs-manual": "git -C camunda-docs-manual pull || git clone git@github.com:camunda/camunda-docs-manual.git camunda-docs-manual",
     "pull:docs-static": "git -C camunda-docs-static pull || git clone git@github.com:camunda/camunda-docs-static.git camunda-docs-static",
     "pull:docs-cloud": "git -C camunda-cloud-documentation pull || git clone git@github.com:camunda-cloud/camunda-cloud-documentation.git camunda-cloud-documentation",
-    "build:modeler": "(cd camunda-modeler && npm i && npm run build)",
+    "build:modeler": "node lib/helper/modelerArgumentsFix.js && (cd camunda-modeler && npm i && npm run client:build)",
     "screenshots": "node lib/takeScreenshots.js",
     "test": "mocha --recursive test/spec",
     "lint": "eslint .",
@@ -33,8 +33,8 @@
     "mkdirp": "^1.0.4",
     "mocha": "^8.2.1",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.23.4",
     "rimraf": "^3.0.2",
-    "sharp": "^0.30.5",
-    "spectron": "^19.0.0"
+    "sharp": "^0.30.5"
   }
 }
