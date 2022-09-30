@@ -4,6 +4,7 @@
   "description": "Update the docs screenshots of the Camunda Modeler",
   "scripts": {
     "pull:modeler": "git -C camunda-modeler pull || git clone git@github.com:camunda/camunda-modeler.git camunda-modeler",
+    "pull:modeler:https": "git -C camunda-modeler pull || git clone https://github.com/camunda/camunda-modeler.git camunda-modeler",
     "pull:docs-manual": "git -C camunda-docs-manual pull || git clone git@github.com:camunda/camunda-docs-manual.git camunda-docs-manual",
     "pull:docs-static": "git -C camunda-docs-static pull || git clone git@github.com:camunda/camunda-docs-static.git camunda-docs-static",
     "pull:docs-cloud": "git -C camunda-cloud-documentation pull || git clone git@github.com:camunda-cloud/camunda-cloud-documentation.git camunda-cloud-documentation",
@@ -13,7 +14,8 @@
     "lint": "eslint .",
     "pull": "run-p pull:*",
     "start": "run-s lint pull build:modeler test screenshots",
-    "all": "run-s lint pull build:modeler test"
+    "all": "run-s pull build:modeler test",
+    "ci-screenshots": "run-s pull:modeler:https build:modeler screenshots"
   },
   "repository": {
     "type": "git",
