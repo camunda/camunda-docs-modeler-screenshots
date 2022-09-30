@@ -10,12 +10,15 @@
     "pull:docs-cloud": "git -C camunda-cloud-documentation pull || git clone git@github.com:camunda-cloud/camunda-cloud-documentation.git camunda-cloud-documentation",
     "build:modeler": "node lib/helper/modelerArgumentsFix.js && (cd camunda-modeler && npm i && npm run client:build)",
     "screenshots": "node lib/takeScreenshots.js",
+    "screenshots:ci": "run-s C7mock:start screenshots C7mock:stop",
     "test": "mocha --recursive test/spec",
     "lint": "eslint .",
     "pull": "run-p pull:*",
+    "C7mock:start": "node ./scripts/start-server.js",
+    "C7mock:stop": "node ./scripts/stop-server.js",
     "start": "run-s lint pull build:modeler test screenshots",
     "all": "run-s pull build:modeler test",
-    "ci-screenshots": "run-s pull:modeler:https build:modeler screenshots"
+    "all:ci": "run-s pull:modeler:https build:modeler screenshots:ci"
   },
   "repository": {
     "type": "git",
@@ -31,6 +34,7 @@
     "chai": "^4.2.0",
     "eslint": "^7.18.0",
     "eslint-plugin-bpmn-io": "^0.12.0",
+    "express": "^4.18.1",
     "fkill": "^7.1.0",
     "mkdirp": "^1.0.4",
     "mocha": "^8.2.1",
