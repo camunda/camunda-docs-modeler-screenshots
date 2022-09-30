@@ -24,6 +24,10 @@ jobs:
       run: npm ci
     - name: take screenshot
       run: xvfb-run npm run all:ci
+      env:
+        CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
     - name: Archive cloud-documentation artifacts
       uses: actions/upload-artifact@v3
       with:
