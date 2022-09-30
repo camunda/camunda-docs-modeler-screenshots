@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: take screenshot
-      run: xvfb-run npm run ci-screenshots
+      run: xvfb-run npm run all:ci
     - name: Archive cloud-documentation artifacts
       uses: actions/upload-artifact@v3
       with:
