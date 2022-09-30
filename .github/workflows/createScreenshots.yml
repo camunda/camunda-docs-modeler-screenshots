@@ -1,0 +1,42 @@
+name: CI
+on: [ workflow_dispatch, push ]
+jobs:
+  create-screenshots:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16
+    - name: Cache Node.js modules
+      uses: actions/cache@v2
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.OS }}-node-
+          ${{ runner.OS }}-
+    - name: Install dependencies
+      run: npm ci
+    - name: take screenshot
+      run: xvfb-run npm run ci-screenshots
+    - name: Archive cloud-documentation artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: camunda-cloud-documentation
+        path: camunda-cloud-documentation
+    - name: Archive camunda-docs-manual artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: camunda-docs-manual
+        path: camunda-docs-manual
+    - name: Archive camunda-docs-static artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: camunda-docs-static
+        path: camunda-docs-static
+
