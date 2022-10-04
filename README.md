@@ -112,6 +112,18 @@ To add a script for automated capture of a new screenshot, follow these steps:
     * You can use the Dev Console in the Camunda Modeler to inspect elements and find out which selector to use in order to select them.
     * Various interactions (e.g., `.click`, `.doubleClick`) are available. Check out `lib/helper/createModeler` to find out more.
 
+### Run on Apple M1 (ARM64)
+
+Apple M1 users are trapped in an endless loop when building the Modeler via `npm run build:modeler`.
+This is because Camunda Modeler yet doesn't support the ARM64 architecture (see https://github.com/camunda/camunda-modeler/issues/1996).
+
+You can circumvent that problem by only running the Webpack build of Camunda Modeler as follows: 
+
+1. Change directory into `~/camunda-docs-modeler-screenshots/camunda-modeler/client`
+2. Run: `npm i` and `npm run build`
+4. Change directory back into `~/camunda-docs-modeler-screenshots`
+5. Run: `npm run screenshots`
+
 ## License
 
 MIT
