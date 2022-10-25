@@ -28,6 +28,7 @@ jobs:
         CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        OAUTH_URL: ${{ secrets.OAUTH_URL }}
     - name: Archive cloud-documentation artifacts
       uses: actions/upload-artifact@v3
       with:
