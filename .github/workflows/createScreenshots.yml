@@ -1,9 +1,20 @@
 name: Generate Screenshots
-on: [ workflow_dispatch, push ]
+on: 
+  workflow_dispatch:
+    inputs:
+      push:
+        description: push changes to docs repos
+        type: boolean
+      branch-name:
+        description: branch to commit the changes to
+        type: string
+        default: 'update-modeler-screenshots'
+        required: false
+  push:
+
 jobs:
   create-screenshots:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -22,7 +33,7 @@ jobs:
           ${{ runner.OS }}-
     - name: Install dependencies
       run: npm ci
-    - name: take screenshot
+    - name: take screenshots
       run: xvfb-run npm run all:ci
       env:
         CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
@@ -32,8 +43,8 @@ jobs:
     - name: Archive cloud-documentation artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: camunda-cloud-documentation
-        path: camunda-cloud-documentation
+        name: camunda-platform-docs
+        path: camunda-platform-docs
     - name: Archive camunda-docs-manual artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -44,4 +55,33 @@ jobs:
       with:
         name: camunda-docs-static
         path: camunda-docs-static
-
+    - name: Push to camunda-docs-manual
+      if: ${{ inputs.push }}
+      env:
+        BPMN_IO_TOKEN: ${{ secrets.BPMN_IO_TOKEN }}
+        BPMN_IO_EMAIL: ${{ secrets.BPMN_IO_EMAIL }}
+        BPMN_IO_USERNAME: ${{ secrets.BPMN_IO_USERNAME }}
+        OWNER: "camunda"
+        BRANCH: ${{ inputs.branch-name }}
+        REPO: "camunda-docs-manual"
+      run: scripts/branch-and-commit.sh
+    - name: Push to camunda-docs-static
+      if: ${{ inputs.push }}
+      env:
+        BPMN_IO_TOKEN: ${{ secrets.BPMN_IO_TOKEN }}
+        BPMN_IO_EMAIL: ${{ secrets.BPMN_IO_EMAIL }}
+        BPMN_IO_USERNAME: ${{ secrets.BPMN_IO_USERNAME }}
+        OWNER: "camunda"
+        BRANCH: ${{ inputs.branch-name }}
+        REPO: "camunda-docs-static"
+      run: scripts/branch-and-commit.sh
+    - name: Push to camunda-platform-docs
+      if: ${{ inputs.push }}
+      env:
+        BPMN_IO_TOKEN: ${{ secrets.BPMN_IO_TOKEN }}
+        BPMN_IO_EMAIL: ${{ secrets.BPMN_IO_EMAIL }}
+        BPMN_IO_USERNAME: ${{ secrets.BPMN_IO_USERNAME }}
+        OWNER: "camunda"
+        BRANCH: ${{ inputs.branch-name }}
+        REPO: "camunda-platform-docs"
+      run: scripts/branch-and-commit.sh
