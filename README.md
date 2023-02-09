@@ -12,14 +12,16 @@ Use this repo to update the screenshots of the Camunda Modeler used in the
 have been basic UX / Style changes in the Modeler.
 
 First, you need to clone this repository and install the dependencies:
-```
-$ git clone git@github.com:camunda/camunda-docs-modeler-screenshots.git
-$ npm install
+
+```sh
+git clone git@github.com:camunda/camunda-docs-modeler-screenshots.git
+npm install
 ```
 
 To create the respective screenshots run
-```
-$ npm run start
+
+```sh
+npm run start
 ```
 
 This will checkout the [camunda-modeler](https://github.com/camunda/camunda-modeler)
