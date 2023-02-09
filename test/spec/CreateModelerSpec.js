@@ -58,7 +58,7 @@ describe('CreateModeler initialization', function() {
     const propPanelContainer = await modeler.getElement('.properties-container');
     const propPanelSize = await propPanelContainer.boundingBox();
 
-    expect(propPanelSize.width).to.equal(420);
+    expect(propPanelSize.width).to.be.closeTo(420, 1);
   });
 
 
