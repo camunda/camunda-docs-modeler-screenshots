@@ -24,8 +24,8 @@ jobs:
     - name: Archive cloud-documentation artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: camunda-cloud-documentation
-        path: camunda-cloud-documentation
+        name: camunda-platform-docs
+        path: camunda-platform-docs
     - name: Archive camunda-docs-manual artifacts
       uses: actions/upload-artifact@v3
       with:
