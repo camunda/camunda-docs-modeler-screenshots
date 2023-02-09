@@ -15,6 +15,7 @@ First, you need to clone this repository and install the dependencies:
 
 ```sh
 git clone git@github.com:camunda/camunda-docs-modeler-screenshots.git
+cd camunda-docs-modeler-screenshots
 npm install
 ```
 
