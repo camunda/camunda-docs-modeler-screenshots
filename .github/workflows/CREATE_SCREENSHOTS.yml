@@ -21,17 +21,17 @@ jobs:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         OAUTH_URL: ${{ secrets.OAUTH_URL }}
-    - name: Archive cloud-documentation artifacts
+    - name: Archive Camunda 8 artifacts
       uses: actions/upload-artifact@v3
       with:
         name: camunda-platform-docs
         path: camunda-platform-docs
-    - name: Archive camunda-docs-manual artifacts
+    - name: Archive Camunda 7 (manual) artifacts
       uses: actions/upload-artifact@v3
       with:
         name: camunda-docs-manual
         path: camunda-docs-manual
-    - name: Archive camunda-docs-static artifacts
+    - name: Archive Camunda 7 (static) artifacts
       uses: actions/upload-artifact@v3
       with:
         name: camunda-docs-static
