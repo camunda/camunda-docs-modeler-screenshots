@@ -21,6 +21,7 @@ jobs:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         OAUTH_URL: ${{ secrets.OAUTH_URL }}
+        MAX_PARALLEL_EXECUTIONS: 5
     - name: Archive Camunda 8 artifacts
       uses: actions/upload-artifact@v3
       with:
