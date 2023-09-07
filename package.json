@@ -17,8 +17,8 @@
     "C7mock:start": "node ./scripts/start-server.js",
     "C7mock:stop": "node ./scripts/stop-server.js",
     "start": "run-s lint pull build:modeler test screenshots",
-    "all": "run-s pull build:modeler test",
-    "all:ci": "run-s pull:modeler:https build:modeler screenshots:ci"
+    "all": "run-s lint pull build:modeler test",
+    "all:ci": "run-s lint pull:modeler:https build:modeler screenshots:ci"
   },
   "repository": {
     "type": "git",
