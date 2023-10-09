@@ -8,7 +8,7 @@
     "pull:docs-manual": "git -C camunda-docs-manual pull || git clone git@github.com:camunda/camunda-docs-manual.git camunda-docs-manual",
     "pull:docs-static": "git -C camunda-docs-static pull || git clone git@github.com:camunda/camunda-docs-static.git camunda-docs-static",
     "pull:docs-cloud": "git -C camunda-platform-docs pull || git clone git@github.com:camunda/camunda-platform-docs.git camunda-platform-docs",
-    "build:modeler": "node lib/helper/modelerArgumentsFix.js && (cd camunda-modeler && npm i && npm install electron@25 && npm run preload:build && npm run client:build)",
+    "build:modeler": "node lib/helper/modelerArgumentsFix.js && (cd camunda-modeler && npm i && npm run preload:build && npm run client:build)",
     "screenshots": "node lib/takeScreenshots.js",
     "screenshots:ci": "run-s C7mock:start screenshots C7mock:stop",
     "test": "mocha --recursive test/spec",
