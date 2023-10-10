@@ -25,8 +25,8 @@ jobs:
     - name: Archive Camunda 8 artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: camunda-platform-docs
-        path: camunda-platform-docs
+        name: camunda-docs
+        path: camunda-docs
     - name: Archive Camunda 7 (manual) artifacts
       uses: actions/upload-artifact@v3
       with:
