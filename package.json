@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "description": "Update the docs screenshots of the Camunda Modeler",
   "scripts": {
-    "pull:modeler": "git -C camunda-modeler pull || git clone git@github.com:camunda/camunda-modeler.git camunda-modeler",
-    "pull:modeler:https": "git -C camunda-modeler pull || git clone https://github.com/camunda/camunda-modeler.git camunda-modeler",
+    "pull:modeler": "node lib/helper/setupModeler",
+    "pull:modeler:https": "node lib/helper/setupModeler",
     "pull:docs-manual": "git -C camunda-docs-manual pull || git clone git@github.com:camunda/camunda-docs-manual.git camunda-docs-manual",
     "pull:docs-static": "git -C camunda-docs-static pull || git clone git@github.com:camunda/camunda-docs-static.git camunda-docs-static",
     "pull:docs-cloud": "git -C camunda-docs pull || git clone git@github.com:camunda/camunda-docs.git camunda-docs",
-    "build:modeler": "node lib/helper/modelerArgumentsFix.js && (cd camunda-modeler && npm i && npm run preload:build && npm run client:build)",
     "screenshots": "node lib/takeScreenshots.js",
     "screenshots:ci": "run-s C7mock:start screenshots C7mock:stop",
     "test": "mocha --recursive test/spec",
@@ -16,9 +15,9 @@
     "pull": "run-p pull:*",
     "C7mock:start": "node ./scripts/start-server.js",
     "C7mock:stop": "node ./scripts/stop-server.js",
-    "start": "run-s lint pull build:modeler test screenshots",
-    "all": "run-s lint pull build:modeler test",
-    "all:ci": "run-s lint pull:modeler:https build:modeler screenshots:ci"
+    "start": "run-s lint pull test screenshots",
+    "all": "run-s lint pull test",
+    "all:ci": "run-s lint pull:modeler:https screenshots:ci"
   },
   "repository": {
     "type": "git",
@@ -32,11 +31,13 @@
   "homepage": "https://github.com/camunda/camunda-docs-modeler-screenshots",
   "dependencies": {
     "chai": "^4.2.0",
+    "decompress": "^4.2.1",
     "eslint": "^7.18.0",
     "eslint-plugin-bpmn-io": "^0.12.0",
     "express": "^4.18.1",
     "fkill": "^7.1.0",
     "mocha": "^10.0.0",
+    "node-fetch": "^2.7.0",
     "npm-run-all": "^4.1.5",
     "p-all": "^3.0.0",
     "playwright-core": "^1.38.0",
