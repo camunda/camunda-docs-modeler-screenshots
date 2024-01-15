@@ -10,3 +10,4 @@ coverage/
 *.iml
 .DS_Store
 .nyc_output
+.env
