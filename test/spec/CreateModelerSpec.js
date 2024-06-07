@@ -5,10 +5,10 @@ const expect = require('chai').expect;
 
 const createModeler = require('../../lib/helper/createModeler');
 
-const TMP_DIR = 'lib/tmp';
+const WORKSPACE_DIR = 'lib/tmp/workspace';
 
 
-describe('CreateModeler initialization', function() {
+describe('lib/helper/createModeler - initialization', function() {
 
   this.timeout(5000);
 
@@ -17,7 +17,7 @@ describe('CreateModeler initialization', function() {
   afterEach(async () => {
     await modeler.close();
 
-    fs.rmSync(TMP_DIR, { recursive: true });
+    fs.rmSync(WORKSPACE_DIR, { recursive: true });
   });
 
 
@@ -40,7 +40,7 @@ describe('CreateModeler initialization', function() {
     modeler = await createModeler({ diagramPaths });
 
     // then
-    const tmpDir = fs.readdirSync(TMP_DIR);
+    const tmpDir = fs.readdirSync(WORKSPACE_DIR);
     expect(tmpDir.length).equals(2);
   });
 
@@ -81,7 +81,7 @@ describe('CreateModeler initialization', function() {
 });
 
 
-describe('CreateModeler tearDown', function() {
+describe('lib/helper/createModeler - teardown', function() {
 
   this.timeout(5000);
 
@@ -110,7 +110,7 @@ describe('CreateModeler tearDown', function() {
     await modeler.close();
 
     // then
-    const tmpDir = fs.readdirSync(TMP_DIR);
+    const tmpDir = fs.readdirSync(WORKSPACE_DIR);
     expect(tmpDir.length).equals(0);
   });
 
