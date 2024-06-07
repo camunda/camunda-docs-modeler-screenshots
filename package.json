@@ -14,7 +14,7 @@
     "pull": "run-p pull:*",
     "C7mock:start": "node ./scripts/start-server.js",
     "C7mock:stop": "node ./scripts/stop-server.js",
-    "start": "run-s lint pull test screenshots",
+    "start": "run-s pull screenshots",
     "start:ci": "run-s pull:modeler screenshots:ci",
     "all": "run-s lint pull test",
     "all:ci": "run-s lint pull:modeler test"
