@@ -4,7 +4,6 @@
   "description": "Update the docs screenshots of the Camunda Modeler",
   "scripts": {
     "pull:modeler": "node lib/helper/setupModeler",
-    "pull:modeler:https": "node lib/helper/setupModeler",
     "pull:docs-manual": "git -C camunda-docs-manual pull || git clone git@github.com:camunda/camunda-docs-manual.git camunda-docs-manual",
     "pull:docs-static": "git -C camunda-docs-static pull || git clone git@github.com:camunda/camunda-docs-static.git camunda-docs-static",
     "pull:docs-cloud": "git -C camunda-docs pull || git clone git@github.com:camunda/camunda-docs.git camunda-docs",
@@ -16,8 +15,9 @@
     "C7mock:start": "node ./scripts/start-server.js",
     "C7mock:stop": "node ./scripts/stop-server.js",
     "start": "run-s lint pull test screenshots",
+    "start:ci": "run-s pull:modeler screenshots:ci",
     "all": "run-s lint pull test",
-    "all:ci": "run-s lint pull:modeler:https screenshots:ci"
+    "all:ci": "run-s lint pull:modeler test"
   },
   "repository": {
     "type": "git",

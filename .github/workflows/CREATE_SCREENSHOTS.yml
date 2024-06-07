@@ -1,5 +1,8 @@
 name: Generate Screenshots
-on: [ workflow_dispatch, push ]
+on:
+  workflow_dispatch:
+  push:
+
 jobs:
   create-screenshots:
     runs-on: ubuntu-latest
@@ -15,7 +18,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Take Screenshots
-      run: xvfb-run npm run all:ci
+      run: xvfb-run npm run start:ci
       env:
         CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
