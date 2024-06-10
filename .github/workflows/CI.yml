@@ -3,7 +3,7 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '15 4 * * *'
+    - cron: '15 9 * * *'
 jobs:
   Build:
     runs-on: 'ubuntu-latest'
