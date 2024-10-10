@@ -1,5 +1,7 @@
 # camunda-docs-modeler-screenshots
 
+[![CI](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CI.yml/badge.svg)](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CI.yml)
+
 Update screenshots of the [Camunda Modeler](https://github.com/camunda/camunda-modeler)
 used in the [docs](https://docs.camunda.org/manual/latest/modeler/).
 
