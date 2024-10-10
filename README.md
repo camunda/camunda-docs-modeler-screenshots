@@ -1,6 +1,6 @@
 # camunda-docs-modeler-screenshots
 
-[![CI](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CI.yml/badge.svg)](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CI.yml)
+[![CI](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CI.yml/badge.svg)](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CI.yml) [![Generate Screenshots](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CREATE_SCREENSHOTS.yml/badge.svg)](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CREATE_SCREENSHOTS.yml)
 
 Update screenshots of the [Camunda Modeler](https://github.com/camunda/camunda-modeler)
 used in the [docs](https://docs.camunda.org/manual/latest/modeler/).
