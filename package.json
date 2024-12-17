@@ -17,7 +17,8 @@
     "start": "run-s pull screenshots",
     "start:ci": "run-s pull:modeler screenshots:ci",
     "all": "run-s lint pull test",
-    "all:ci": "run-s lint pull:modeler test"
+    "all:ci": "run-s lint pull:modeler test",
+    "prepare-cluster": "node ./scripts/prepare-cluster.js"
   },
   "repository": {
     "type": "git",

@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  create-screenshots:
+  create_screenshots:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,6 +17,12 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: npm ci
+    - name: Prepare Camunda 8 cluster
+      run: npm run prepare-cluster
+      env:
+        CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
+        CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
+        CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
     - name: Take Screenshots
       run: xvfb-run npm run start:ci
       env:
