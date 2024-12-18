@@ -26,14 +26,15 @@ async function prepareCluster() {
   const secret = await getSecret();
 
   const cluster = await getCluster(secret);
+  const clusterStatus = getClusterStatus(cluster);
 
-  if (cluster.status.ready === 'Healthy') {
+  if (clusterStatus === 'Healthy') {
     console.log('Cluster is ready');
     return;
   }
 
-  if (cluster.status.ready !== 'Suspended') {
-    throw new Error(`Cluster is in unexpected state: ${cluster.status.ready}`);
+  if (clusterStatus !== 'Suspended') {
+    throw new Error(`Cluster is in unexpected state: ${clusterStatus}`);
   }
 
   console.log('Cluster is suspended. Resuming...');
@@ -114,16 +115,20 @@ async function resumeCluster(secret) {
 async function whenReady(cluster, secret) {
   let attempts = 0;
 
-  while (cluster.status.ready !== 'Healthy' && attempts < 30) {
+  while (getClusterStatus(cluster) !== 'Healthy' && attempts < 30) {
     await new Promise(resolve => setTimeout(resolve, 10000));
 
     cluster = await getCluster(secret);
 
-    console.log('Checking cluster status (attempt %d): %s', attempts, cluster.status.ready);
+    console.log('Checking cluster status (attempt %d): %s', attempts, getClusterStatus(cluster));
     attempts++;
   }
 
-  if (cluster.status.ready !== 'Healthy') {
+  if (getClusterStatus(cluster) !== 'Healthy') {
     throw new Error('Cluster did not become ready');
   }
+}
+
+function getClusterStatus(cluster) {
+  return cluster.status.zeebeStatus;
 }
