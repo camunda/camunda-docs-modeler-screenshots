@@ -31,14 +31,14 @@ async function prepareCluster() {
   if (clusterStatus === 'Healthy') {
     console.log('Cluster is ready');
     return;
-  }
-
-  if (clusterStatus !== 'Suspended') {
+  } else if (clusterStatus === 'Suspended') {
+    console.log('Cluster is suspended. Resuming...');
+    await resumeCluster(secret);
+  } else if (clusterStatus === 'Resuming') {
+    console.log('Cluster is already resuming...');
+  } else {
     throw new Error(`Cluster is in unexpected state: ${clusterStatus}`);
   }
-
-  console.log('Cluster is suspended. Resuming...');
-  await resumeCluster(secret);
 
   await whenReady(cluster, secret);
 
