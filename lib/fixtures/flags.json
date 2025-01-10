@@ -1,3 +1,4 @@
 {
-  "single-instance": false
+  "single-instance": false,
+  "disable-connector-templates": true
 }
