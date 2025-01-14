@@ -10,6 +10,7 @@
     "screenshots": "node lib/takeScreenshots.js",
     "screenshots:ci": "run-s C7mock:start screenshots C7mock:stop",
     "test": "mocha --recursive test/spec",
+    "dev": "npm run test -- --watch",
     "lint": "eslint .",
     "pull": "run-p pull:*",
     "C7mock:start": "node ./scripts/start-server.js",
