@@ -78,6 +78,28 @@ describe('lib/helper/createModeler - initialization', function() {
   });
 
 
+  it('should create flags.json in the correct location', async function() {
+
+    // when
+    modeler = await createModeler();
+
+    // then
+    const userDataDir = getUserDataDir();
+
+    expect(fs.existsSync(path.resolve(userDataDir, 'resources', 'flags.json'))).to.be.true;
+  });
+
+
+  it('should create config.json in the correct location', async function() {
+
+    // when
+    modeler = await createModeler();
+
+    // then
+    const userDataDir = getUserDataDir();
+
+    expect(fs.existsSync(path.resolve(userDataDir, 'config.json'))).to.be.true;
+  });
 });
 
 
@@ -115,3 +137,10 @@ describe('lib/helper/createModeler - teardown', function() {
   });
 
 });
+
+// helper
+function getUserDataDir() {
+  const workspaceDirs = fs.readdirSync(WORKSPACE_DIR);
+
+  return path.resolve(WORKSPACE_DIR, workspaceDirs.find(dir => dir.startsWith('user-data-')));
+}
