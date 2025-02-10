@@ -7,7 +7,7 @@
     <bpmn:sequenceFlow id="Flow_1xq6ms4" sourceRef="StartEvent_1" targetRef="ServiceTask_1" />
     <bpmn:serviceTask id="ServiceTask_1">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="==type" />
+        <zeebe:taskDefinition type="='type'" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1xq6ms4</bpmn:incoming>
       <bpmn:outgoing>Flow_0sku99n</bpmn:outgoing>
