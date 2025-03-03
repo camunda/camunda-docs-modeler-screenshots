@@ -5,6 +5,8 @@ on:
 
 jobs:
   create_screenshots:
+    env:
+      DEBUG: 'pw:channel:*'
     runs-on: ubuntu-latest
 
     steps:

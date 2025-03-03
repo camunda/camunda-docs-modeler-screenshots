@@ -6,6 +6,8 @@ on:
     - cron: '15 9 * * *'
 jobs:
   Build:
+    env:
+      DEBUG: 'pw:channel:*'
     runs-on: 'ubuntu-latest'
 
     strategy:
