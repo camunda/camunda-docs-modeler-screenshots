@@ -23,6 +23,6 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Project setup
-      uses: bpmn-io/actions/setup@latest
+      uses: bpmn-io/actions/setup@be8187530613bc5f19f37d5ccd32bea72e03472b
     - name: Build
       run: xvfb-run npm run all:ci
