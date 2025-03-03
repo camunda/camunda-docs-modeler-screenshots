@@ -7,11 +7,19 @@ used in the [docs](https://docs.camunda.org/manual/latest/modeler/).
 
 ## Usage
 
-### Update screenshots
-
 Use this repo to update the screenshots of the Camunda Modeler used in the
 [docs](https://docs.camunda.org/manual/latest/modeler/). This is handy once there
 have been basic UX / Style changes in the Modeler.
+
+### Use a workflow
+
+Run the [Generate Screenshots](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CREATE_SCREENSHOTS.yml) workflow.
+
+Once it's completed, download the generated artifacts and upload them to the respective `camunda-docs-*` repos.
+
+### Use locally
+
+Alternatively, you can run the screenshots generation locally.
 
 First, you need to clone this repository and install the dependencies:
 
@@ -116,18 +124,6 @@ To add a script for automated capture of a new screenshot, follow these steps:
 5. Use CSS selectors to perform Modeler interactions (e.g., `await modeler.click('[data-element-id="invoiceValidGateway"]');`).
     * You can use the Dev Console in the Camunda Modeler to inspect elements and find out which selector to use in order to select them.
     * Various interactions (e.g., `.click`, `.doubleClick`) are available. Check out `lib/helper/createModeler` to find out more.
-
-### Run on Apple M1 (ARM64)
-
-Apple M1 users are trapped in an endless loop when building the Modeler via `npm run build:modeler`.
-This is because Camunda Modeler yet doesn't support the ARM64 architecture (see https://github.com/camunda/camunda-modeler/issues/1996).
-
-You can circumvent that problem by only running the Webpack build of Camunda Modeler as follows: 
-
-1. Change directory into `~/camunda-docs-modeler-screenshots/camunda-modeler/client`
-2. Run: `npm i` and `npm run build`
-4. Change directory back into `~/camunda-docs-modeler-screenshots`
-5. Run: `npm run screenshots`
 
 ## License
 
