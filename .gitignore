@@ -1,6 +1,6 @@
-camunda-docs-manual/
-camunda-docs-static/
-camunda-docs/
+/camunda-docs-manual/
+/camunda-docs-static/
+/camunda-docs/
 lib/tmp/
 node_modules/
 dist/
