@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1ic5gzj" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.35.0-dev" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:process id="Foo" isExecutable="true">
+    <bpmn:startEvent id="Event_1ynksvh">
+      <bpmn:outgoing>Flow_1u9uf09</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:businessRuleTask id="Activity_1t3a333" name="Credit score calculation">
+      <bpmn:extensionElements>
+        <zeebe:calledDecision decisionId="Decision_0onmfp8" resultVariable="creditScore" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=income" target="income" />
+          <zeebe:output source="=creditScore" target="creditScore" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1u9uf09</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k6xa46</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_1u9uf09" sourceRef="Event_1ynksvh" targetRef="Activity_1t3a333" />
+    <bpmn:userTask id="Activity_1i4f0zx" name="LoanApplicationReview">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+        <zeebe:formDefinition formId="LoanApplicationReview" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=creditScore" target="creditScore" />
+          <zeebe:output source="=loanApproved" target="loanApproved" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0k6xa46</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p7vzty</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0k6xa46" sourceRef="Activity_1t3a333" targetRef="Activity_1i4f0zx" />
+    <bpmn:endEvent id="Event_026p2re">
+      <bpmn:incoming>Flow_1p7vzty</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1p7vzty" sourceRef="Activity_1i4f0zx" targetRef="Event_026p2re" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Foo">
+      <bpmndi:BPMNShape id="Event_1ynksvh_di" bpmnElement="Event_1ynksvh">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t3a333_di" bpmnElement="Activity_1t3a333">
+        <dc:Bounds x="240" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1i4f0zx_di" bpmnElement="Activity_1i4f0zx">
+        <dc:Bounds x="400" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_026p2re_di" bpmnElement="Event_026p2re">
+        <dc:Bounds x="562" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1u9uf09_di" bpmnElement="Flow_1u9uf09">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="240" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k6xa46_di" bpmnElement="Flow_0k6xa46">
+        <di:waypoint x="340" y="120" />
+        <di:waypoint x="400" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1p7vzty_di" bpmnElement="Flow_1p7vzty">
+        <di:waypoint x="500" y="120" />
+        <di:waypoint x="562" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
