@@ -1,0 +1,60 @@
+{
+  "components": [
+    {
+      "text": "# Loan application review",
+      "type": "text",
+      "layout": {
+        "row": "Row_0scqn84",
+        "columns": null
+      },
+      "id": "Field_1xigiil"
+    },
+    {
+      "text": "Credit score:",
+      "type": "text",
+      "layout": {
+        "row": "Row_0xwn8xy",
+        "columns": null
+      },
+      "id": "Field_0yy9wom"
+    },
+    {
+      "text": "=creditScore",
+      "type": "text",
+      "layout": {
+        "row": "Row_1diuhis",
+        "columns": null
+      },
+      "id": "Field_020kk0f"
+    },
+    {
+      "label": "Approved",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_1ubmpks",
+        "columns": null
+      },
+      "id": "Field_1i506so",
+      "key": "loanApproved"
+    },
+    {
+      "label": "Comments",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_0tw9ink",
+        "columns": null
+      },
+      "id": "Field_06n98l2",
+      "key": "textarea_r7oe5"
+    }
+  ],
+  "type": "default",
+  "id": "LoanApplicationReview",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.7.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.35.0-dev"
+  },
+  "schemaVersion": 18
+}

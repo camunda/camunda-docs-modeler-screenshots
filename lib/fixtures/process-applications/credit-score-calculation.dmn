@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_17d3rni" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.35.0-dev" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <decision id="Decision_0onmfp8" name="Credit score calculation">
+    <decisionTable id="DecisionTable_0f53bws">
+      <input id="Input_1" biodi:width="192">
+        <inputExpression id="InputExpression_1" typeRef="number">
+          <text>income</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" name="creditScore" typeRef="number" biodi:width="192" />
+      <rule id="DecisionRule_1f79nue">
+        <inputEntry id="UnaryTests_1338wkz">
+          <text>income &lt; 10000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1kpxkfw">
+          <text>1</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1vfgezl">
+        <inputEntry id="UnaryTests_0fnsnc7">
+          <text>income &gt;= 10000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_19kw3tj">
+          <text>2</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_06g1vjf" name="Other calculation">
+    <decisionTable id="DecisionTable_0q54qor">
+      <input id="InputClause_16p2fir">
+        <inputExpression id="LiteralExpression_05rqney" typeRef="string">
+          <text>foo</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1st171s" name="bar" typeRef="string" />
+      <rule id="DecisionRule_1darojn">
+        <inputEntry id="UnaryTests_1rkr2hx">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_04tjd72">
+          <text>"baz"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0onmfp8">
+        <dc:Bounds height="80" width="180" x="160" y="100" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1eirb3z" dmnElementRef="Decision_06g1vjf">
+        <dc:Bounds height="80" width="180" x="160" y="230" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
