@@ -1,4 +1,5 @@
 name: Generate Screenshots
+
 on:
   workflow_dispatch:
   push:
@@ -8,44 +9,64 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Project setup
-      uses: bpmn-io/actions/setup@latest
-    - name: Prepare Camunda 8 cluster
-      run: npm run prepare-cluster
-      env:
-        CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
-        CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
-        CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
-    - name: Take Screenshots
-      run: xvfb-run npm run start:ci
-      env:
-        CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        OAUTH_URL: ${{ secrets.OAUTH_URL }}
-        MAX_PARALLEL_EXECUTIONS: 5
-    - name: Archive Camunda 8 artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs
-        path: camunda-docs
-    - name: Archive Camunda 7 (manual) artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs-manual
-        path: camunda-docs-manual
-    - name: Archive Camunda 7 (static) artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs-static
-        path: camunda-docs-static
-
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Project setup
+        uses: bpmn-io/actions/setup@latest
+      - name: Prepare Camunda 8 cluster
+        run: npm run prepare-cluster
+        env:
+          CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
+          CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
+          CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
+      - name: Take Screenshots
+        run: xvfb-run npm run start:ci
+        env:
+          CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          OAUTH_URL: ${{ secrets.OAUTH_URL }}
+          MAX_PARALLEL_EXECUTIONS: 5
+      - name: Archive Camunda 8 artifacts
+        id: upload_camunda_docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: camunda-docs
+          path: camunda-docs
+      - name: Archive Camunda 7 (manual) artifacts
+        id: upload_camunda_docs_manual
+        uses: actions/upload-artifact@v4
+        with:
+          name: camunda-docs-manual
+          path: camunda-docs-manual
+      - name: Archive Camunda 7 (static) artifacts
+        id: upload_camunda_docs_static
+        uses: actions/upload-artifact@v4
+        with:
+          name: camunda-docs-static
+          path: camunda-docs-static
+      - name: Set job summary
+        run: |
+          echo "## Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "* [Camunda 8](${{ steps.upload_camunda_docs.outputs.artifact-url }}): $(ls -1 camunda-docs | wc -l) files" >> $GITHUB_STEP_SUMMARY
+          echo "* [Camunda 7 (manual)](${{ steps.upload_camunda_docs_manual.outputs.artifact-url }}): $(ls -1 camunda-docs-manual | wc -l) files" >> $GITHUB_STEP_SUMMARY
+          echo "* [Camunda 7 (static)](${{ steps.upload_camunda_docs_static.outputs.artifact-url }}): $(ls -1 camunda-docs-static | wc -l) files" >> $GITHUB_STEP_SUMMARY
+          echo "## Trigger PR creation" >> $GITHUB_STEP_SUMMARY
+          echo "Trigger the following workflows with the \`screenshotRunId\` \`${{ github.run_id }}\`:" >> $GITHUB_STEP_SUMMARY
+          echo "* [Camunda 8](https://github.com/camunda/camunda-docs/actions/workflows/CREATE_SCREENSHOTS_PR.yml)" >> $GITHUB_STEP_SUMMARY
+          echo "* [Camunda 7 (manual)](https://github.com/camunda/camunda-docs-manual/actions/workflows/CREATE_SCREENSHOTS_PR.yml)" >> $GITHUB_STEP_SUMMARY
+          echo "* [Camunda 7 (static)](https://github.com/camunda/camunda-docs-static/actions/workflows/CREATE_SCREENSHOTS_PR.yml)" >> $GITHUB_STEP_SUMMARY
+          echo "### Trigger via CLI" >> $GITHUB_STEP_SUMMARY
+          echo "You can also trigger the workflows via the CLI with the following commands:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "gh workflow run -R camunda/camunda-docs --field screenshotRunId=${{ github.run_id }} CREATE_SCREENSHOTS_PR.yml" >> $GITHUB_STEP_SUMMARY
+          echo "gh workflow run -R camunda/camunda-docs-manual --field screenshotRunId=${{ github.run_id }} CREATE_SCREENSHOTS_PR.yml" >> $GITHUB_STEP_SUMMARY
+          echo "gh workflow run -R camunda/camunda-docs-static --field screenshotRunId=${{ github.run_id }} CREATE_SCREENSHOTS_PR.yml" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
