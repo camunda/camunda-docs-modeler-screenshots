@@ -1,51 +1,161 @@
 name: Generate Screenshots
+
 on:
   workflow_dispatch:
-  push:
+    inputs:
+      token:
+        description: "GitHub token that has write access to the docs repositories"
+        required: false
+      version:
+        description: "Desktop Modeler version to use for PR. Eg. `(v5.0.0)`"
+        required: false
 
 jobs:
   create_screenshots:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Use Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Project setup
-      uses: bpmn-io/actions/setup@latest
-    - name: Prepare Camunda 8 cluster
-      run: npm run prepare-cluster
-      env:
-        CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
-        CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
-        CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
-    - name: Take Screenshots
-      run: xvfb-run npm run start:ci
-      env:
-        CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        OAUTH_URL: ${{ secrets.OAUTH_URL }}
-        MAX_PARALLEL_EXECUTIONS: 5
-    - name: Archive Camunda 8 artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs
-        path: camunda-docs
-    - name: Archive Camunda 7 (manual) artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs-manual
-        path: camunda-docs-manual
-    - name: Archive Camunda 7 (static) artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs-static
-        path: camunda-docs-static
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - name: Install dependencies
+        run: npm ci
+      - name: Project setup
+        uses: bpmn-io/actions/setup@latest
+      - name: Prepare Camunda 8 cluster
+        run: npm run prepare-cluster
+        env:
+          CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
+          CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
+          CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
+      - name: Take Screenshots
+        run: xvfb-run npm run start:ci
+        env:
+          CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          OAUTH_URL: ${{ secrets.OAUTH_URL }}
+          MAX_PARALLEL_EXECUTIONS: 5
+      - name: Archive Camunda 8 artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: camunda-docs
+          path: camunda-docs
+      - name: Archive Camunda 7 (manual) artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: camunda-docs-manual
+          path: camunda-docs-manual
+      - name: Archive Camunda 7 (static) artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: camunda-docs-static
+          path: camunda-docs-static
 
+  create_pr_camunda-docs-manual:
+    runs-on: ubuntu-latest
+    needs: create_screenshots
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.token != ''
+    steps:
+      - name: Checkout camunda-docs-manual
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.event.inputs.token }}
+          repository: camunda/camunda-docs-manual
+          path: repo
+      - name: Download Screenshots
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download -R camunda/camunda-docs-modeler-screenshots ${{ github.run_id }} -n camunda-docs-manual --dir artifact
+          cp -R artifact/. repo
+          rm -rf artifact
+
+      - name: Create camunda-docs-manual PR
+        id: create_pr_camunda-docs-manual
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.event.inputs.token }}
+          path: repo
+          title: "Update Desktop Modeler Screenshots ${{github.event.inputs.version}}"
+          body: "This PR updates the screenshots for Desktop Modeler ${{github.event.inputs.version}}."
+          base: master
+          draft: true
+          branch: update-desktop-modeler-screenshots
+          commit-message: "docs(desktop-modeler): Update Screenshots ${{github.event.inputs.version}}"
+
+      - run: echo "* [camunda-docs-manual PR](#${{ steps.create_pr_camunda-docs-manual.outputs.pull-request-url  }})" >> $GITHUB_STEP_SUMMARY
+        if: steps.create_pr_camunda-docs-manual.outputs.pull-request-url != ''
+
+  create_pr_camunda-docs-static:
+    runs-on: ubuntu-latest
+    needs: create_screenshots
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.token != ''
+    steps:
+      - name: Checkout camunda-docs-static
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.event.inputs.token }}
+          repository: camunda/camunda-docs-static
+          path: repo
+      - name: Download Screenshots
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download -R camunda/camunda-docs-modeler-screenshots ${{ github.run_id }} -n camunda-docs-static --dir artifact
+          cp -R artifact/. repo
+          rm -rf artifact
+
+      - name: Create camunda-docs-static PR
+        id: create_pr_camunda-docs-static
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.event.inputs.token }}
+          path: repo
+          title: "Update Desktop Modeler Screenshots ${{github.event.inputs.version}}"
+          body: "This PR updates the screenshots for Desktop Modeler ${{github.event.inputs.version}}."
+          base: master
+          draft: true
+          branch: update-desktop-modeler-screenshots
+          commit-message: "docs(desktop-modeler): Update Screenshots ${{github.event.inputs.version}}"
+
+      - run: echo "* [camunda-docs-static PR](#${{ steps.create_pr_camunda-docs-static.outputs.pull-request-url  }})" >> $GITHUB_STEP_SUMMARY
+        if: steps.create_pr_camunda-docs-static.outputs.pull-request-url != ''
+
+  create_pr_camunda-docs:
+    runs-on: ubuntu-latest
+    needs: create_screenshots
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.token != ''
+    steps:
+      - name: Checkout camunda-docs
+        uses: actions/checkout@v4
+        with:
+          token: ${{ github.event.inputs.token }}
+          repository: camunda/camunda-docs
+          path: repo
+      - name: Download Screenshots
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download -R camunda/camunda-docs-modeler-screenshots ${{ github.run_id }} -n camunda-docs --dir artifact
+          cp -R artifact/. repo
+          rm -rf artifact
+
+      - name: Create camunda-docs PR
+        id: create_pr_camunda-docs
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ github.event.inputs.token }}
+          path: repo
+          title: "Update Desktop Modeler Screenshots ${{github.event.inputs.version}}"
+          body: "This PR updates the screenshots for Desktop Modeler ${{github.event.inputs.version}}."
+          base: main
+          draft: true
+          branch: update-desktop-modeler-screenshots
+          commit-message: "docs(desktop-modeler): Update Screenshots ${{github.event.inputs.version}}"
+
+      - run: echo "* [camunda-docs PR](#${{ steps.create_pr_camunda-docs.outputs.pull-request-url  }})" >> $GITHUB_STEP_SUMMARY
+        if: steps.create_pr_camunda-docs.outputs.pull-request-url != ''
