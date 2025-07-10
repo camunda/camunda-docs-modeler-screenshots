@@ -12,7 +12,9 @@ const files = {
     'camunda-modeler/',
     'camunda-docs-manual/',
     'camunda-docs-static/',
-    'camunda-docs/'
+    'camunda-docs/',
+    '/tmp',
+    '**/plugins/**/dist/**'
   ]
 };
 
