@@ -10,7 +10,12 @@
       },
       "propertiesPanel": {
         "open": true,
-        "width": 420
+        "width": 420,
+        "groups": {
+          "ElementTemplates__CustomProperties": {
+            "open": true
+          }
+        }
       }
     }
   },
