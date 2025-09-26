@@ -5,6 +5,7 @@ on:
 
 jobs:
   create_screenshots:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
 
     steps:
