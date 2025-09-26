@@ -34,16 +34,16 @@
   "dependencies": {
     "chai": "^4.5.0",
     "decompress": "^4.2.1",
-    "dotenv": "^16.4.7",
-    "eslint": "^9.21.0",
+    "dotenv": "^17.2.2",
+    "eslint": "^9.36.0",
     "eslint-plugin-bpmn-io": "^2.2.0",
-    "express": "^4.21.2",
-    "fkill": "^7.1.0",
-    "mocha": "^11.1.0",
+    "express": "^5.1.0",
+    "fkill": "^9.0.0",
+    "mocha": "^11.7.2",
     "node-fetch": "^2.7.0",
     "npm-run-all": "^4.1.5",
-    "p-all": "^3.0.0",
-    "playwright-core": "^1.50.1",
-    "sharp": "^0.32.6"
+    "p-all": "^5.0.1",
+    "playwright-core": "^1.55.1",
+    "sharp": "^0.34.4"
   }
 }
