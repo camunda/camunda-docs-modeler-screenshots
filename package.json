@@ -40,7 +40,6 @@
     "express": "^5.1.0",
     "fkill": "^9.0.0",
     "mocha": "^11.7.2",
-    "node-fetch": "^2.7.0",
     "npm-run-all": "^4.1.5",
     "p-all": "^5.0.1",
     "playwright-core": "^1.55.1",
