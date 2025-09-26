@@ -6,6 +6,7 @@ on:
     - cron: '15 9 * * *'
 jobs:
   Build:
+    timeout-minutes: 15
     runs-on: 'ubuntu-latest'
 
     strategy:
