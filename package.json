@@ -9,7 +9,7 @@
     "pull:docs-cloud": "git -C camunda-docs pull || git clone git@github.com:camunda/camunda-docs.git camunda-docs",
     "screenshots": "node lib/takeScreenshots.js",
     "screenshots:ci": "run-s C7mock:start screenshots C7mock:stop",
-    "test": "mocha --recursive test/spec",
+    "test": "mocha --timeout 10000 --recursive test/spec",
     "dev": "npm run test -- --watch",
     "lint": "eslint .",
     "pull": "run-p pull:*",

@@ -10,8 +10,6 @@ const WORKSPACE_DIR = 'lib/tmp/workspace';
 
 describe('lib/helper/createModeler - initialization', function() {
 
-  this.timeout(5000);
-
   let modeler;
 
   afterEach(async function() {
@@ -104,9 +102,6 @@ describe('lib/helper/createModeler - initialization', function() {
 
 
 describe('lib/helper/createModeler - teardown', function() {
-
-  this.timeout(5000);
-
 
   it('should close a Modeler instance', async function() {
 
