@@ -98,6 +98,19 @@ describe('lib/helper/createModeler - initialization', function() {
 
     expect(fs.existsSync(path.resolve(userDataDir, 'config.json'))).to.be.true;
   });
+
+
+  it('should create config.json with additional configuration', async function() {
+
+    // when
+    modeler = await createModeler({ additionalConfig: { foo: 'bar' } });
+
+    // then
+    const userDataDir = getUserDataDir();
+    const config = JSON.parse(fs.readFileSync(path.resolve(userDataDir, 'config.json')));
+
+    expect(config.foo).to.equal('bar');
+  });
 });
 
 
