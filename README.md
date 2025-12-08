@@ -125,6 +125,23 @@ To add a script for automated capture of a new screenshot, follow these steps:
     * You can use the Dev Console in the Camunda Modeler to inspect elements and find out which selector to use in order to select them.
     * Various interactions (e.g., `.click`, `.doubleClick`) are available. Check out `lib/helper/createModeler` to find out more.
 
+## Tips
+
+### only / skip
+
+You can use `only` to run specific screenshot tasks or `skip` to skip tasks if they are part of a batch task by wrapping them:
+
+```js
+  return [
+    () => triggerScreenshot( ... ),
+    {
+      only: () => triggerScreenshot( ... )
+    },
+    {
+      skip: () => triggerScreenshot( ... )
+    }
+  ]
+```
 ## License
 
 MIT
