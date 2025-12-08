@@ -142,6 +142,18 @@ You can use `only` to run specific screenshot tasks or `skip` to skip tasks if t
     }
   ]
 ```
+
+### Error aggregation
+
+By default, if a screenshot task fails, the process continues and an aggregated error is thrown at the end of the run.
+
+If you want to stop the execution immediately when an error occurs, you can set the `STOP_ON_ERROR` environment variable to `true`:
+
+```sh
+export STOP_ON_ERROR=true
+npm run screenshots
+```
+
 ## License
 
 MIT
