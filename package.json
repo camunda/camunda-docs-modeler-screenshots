@@ -38,7 +38,7 @@
     "eslint": "^9.39.3",
     "eslint-plugin-bpmn-io": "^2.2.0",
     "express": "^5.2.1",
-    "fkill": "^9.0.0",
+    "fkill": "^10.0.3",
     "mocha": "^11.7.5",
     "npm-run-all2": "^8.0.4",
     "p-all": "^5.0.1",
