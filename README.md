@@ -11,6 +11,21 @@ Use this repo to update the screenshots of the Camunda Modeler used in the
 [docs](https://docs.camunda.org/manual/latest/modeler/). This is handy once there
 have been basic UX / Style changes in the Modeler.
 
+### Version-Specific Screenshots
+
+As of this update, the screenshot generation system automatically creates screenshots for **all documented Camunda platform versions** with matching Modeler versions displayed in the footer:
+
+- **Camunda 8 Documentation** (`camunda-docs`):
+  - Generates screenshots for each documented version (8.5, 8.6, 8.7, 8.8, etc.)
+  - Each version's screenshots display the corresponding Modeler version in the footer
+  - Screenshots are saved to version-specific directories (e.g., `versioned_docs/version-8.7/` for 8.7 docs, `docs/` for the latest version)
+
+- **Camunda 7 Documentation** (`camunda-docs-manual` and `camunda-docs-static`):
+  - Uses Camunda 8.7 Modeler version for all screenshots (as per requirements)
+  - No versioned directories
+
+The version mapping is configured in `lib/config/versions.js`.
+
 ### Use a workflow
 
 Run the [Generate Screenshots](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CREATE_SCREENSHOTS.yml) workflow.
@@ -46,9 +61,19 @@ If you want to skip the setup steps (checkout / pull of the repositories and bui
 $ npm run screenshots
 ```
 
-The screenshots will automatically be taken and stored within the `camunda-docs-manual`
-directory structure. To update the screenshots, switch into that directory, manually review the changes,
+The screenshots will automatically be taken and stored within the respective documentation
+directory structures. To update the screenshots, switch into those directories, manually review the changes,
 and then potentially commit and push them.
+
+#### Using a Specific Modeler Version
+
+To use a specific Modeler version for **all** screenshots (overriding the automatic version-specific behavior):
+
+```sh
+node lib/takeScreenshots.js --display-version=8.5.0
+```
+
+This will generate screenshots for only the latest docs version (`docs/` directory) using the specified Modeler version.
 
 
 ### Script new screenshots
@@ -66,7 +91,7 @@ To add a GitHub documentation repository, which contains screenshots to be autom
 
 To add a script for automated capture of a new screenshot, follow these steps:
 
-1. Open the `takeScreenshots.js` file
+1. Open the appropriate file in `lib/camunda-docs/`, `lib/camunda-docs-manual/`, or `lib/camunda-docs-static/`
 2. (optional), create and save the `.bpmn` or `.dmn` file to be showcased in the `lib/fixtures/bpmn` or `lib/fixtures/dmn` directory
 3. (optional), create and save a Camunda Modeler config file to be used in the `lib/fixtures/user-data` directory
     * The config file determines the window size, property-panel toggle status, property-panel width, ... state of the Camunda Modeler
@@ -101,14 +126,16 @@ To add a script for automated capture of a new screenshot, follow these steps:
     }
   }
 ```
-4. Add a new call of the `triggerScreenshots()` function to the `takeScreenshots.js` file
+4. Add a new call of the `triggerScreenshots()` function to the appropriate module file
+    * For Camunda 8 docs: use `${versionPath}` in the path to support multiple versions
+    * For Camunda 7 docs: use the standard path format
     * Format:
   ```js
   await triggerScreenshot('<screenshotFilePath>', async (filepath) => {
     const diagramPaths = [ path.join(__dirname, '<diagramPath>') ],
           config = path.join(__dirname, '<configFilePath');
 
-    modeler = await createModeler(diagramPaths, config);
+    modeler = await createModeler({ diagramPaths, configPath: config, displayVersion });
 
     // Modeler interactions
     await modeler.click('[data-element-id="invoiceValidGateway"]');
