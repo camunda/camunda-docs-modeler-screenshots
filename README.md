@@ -13,18 +13,21 @@ have been basic UX / Style changes in the Modeler.
 
 ### Version-Specific Screenshots
 
-As of this update, the screenshot generation system automatically creates screenshots for **all documented Camunda platform versions** with matching Modeler versions displayed in the footer:
+As of this update, the screenshot generation system automatically creates screenshots for **all documented Camunda platform versions** with matching **engine versions** displayed:
 
 - **Camunda 8 Documentation** (`camunda-docs`):
-  - Generates screenshots for each documented version (8.5, 8.6, 8.7, 8.8, etc.)
-  - Each version's screenshots display the corresponding Modeler version in the footer
+  - Generates screenshots for each documented version (8.5, 8.6, 8.7, 8.9, etc.)
+  - Each version's screenshots display the corresponding **engine version** (not Modeler version)
+  - The latest version (8.9) uses "8.9 (alpha)" as the engine version
   - Screenshots are saved to version-specific directories (e.g., `versioned_docs/version-8.7/` for 8.7 docs, `docs/` for the latest version)
 
 - **Camunda 7 Documentation** (`camunda-docs-manual` and `camunda-docs-static`):
-  - Uses Camunda 8.7 Modeler version for all screenshots (as per requirements)
+  - Uses Camunda 7 engine version "7.24" for all screenshots
   - No versioned directories
 
 The version mapping is configured in `lib/config/versions.js`.
+
+**Note**: The `--display-version` flag controls the Modeler version shown and remains unchanged. The engine versions (set via `--c8-engine-version` and `--c7-engine-version` flags) control what engine version is displayed in the Modeler.
 
 ### Use a workflow
 
@@ -65,15 +68,21 @@ The screenshots will automatically be taken and stored within the respective doc
 directory structures. To update the screenshots, switch into those directories, manually review the changes,
 and then potentially commit and push them.
 
-#### Using a Specific Modeler Version
+#### Using a Specific Engine Version
 
-To use a specific Modeler version for **all** screenshots (overriding the automatic version-specific behavior):
+To use a specific Camunda 8 engine version for **all** screenshots (overriding the automatic version-specific behavior):
 
 ```sh
-node lib/takeScreenshots.js --display-version=8.5.0
+node lib/takeScreenshots.js --c8-engine-version="8.7"
 ```
 
-This will generate screenshots for only the latest docs version (`docs/` directory) using the specified Modeler version.
+For backward compatibility, `--display-version` is still supported and is treated as `--c8-engine-version`:
+
+```sh
+node lib/takeScreenshots.js --display-version="8.5"
+```
+
+This will generate screenshots for only the latest docs version (`docs/` directory) using the specified engine version.
 
 
 ### Script new screenshots
@@ -127,15 +136,19 @@ To add a script for automated capture of a new screenshot, follow these steps:
   }
 ```
 4. Add a new call of the `triggerScreenshots()` function to the appropriate module file
-    * For Camunda 8 docs: use `${versionPath}` in the path to support multiple versions
-    * For Camunda 7 docs: use the standard path format
+    * For Camunda 8 docs: use `${versionPath}` in the path to support multiple versions, and pass `c8EngineVersion` to createModeler
+    * For Camunda 7 docs: use the standard path format and pass `c7EngineVersion` to createModeler
     * Format:
   ```js
   await triggerScreenshot('<screenshotFilePath>', async (filepath) => {
     const diagramPaths = [ path.join(__dirname, '<diagramPath>') ],
           config = path.join(__dirname, '<configFilePath');
 
-    modeler = await createModeler({ diagramPaths, configPath: config, displayVersion });
+    // For Camunda 8:
+    modeler = await createModeler({ diagramPaths, configPath: config, c8EngineVersion });
+
+    // For Camunda 7:
+    modeler = await createModeler({ diagramPaths, configPath: config, c7EngineVersion });
 
     // Modeler interactions
     await modeler.click('[data-element-id="invoiceValidGateway"]');
