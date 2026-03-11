@@ -16,7 +16,7 @@ have been basic UX / Style changes in the Modeler.
 As of this update, the screenshot generation system automatically creates screenshots for **all documented Camunda platform versions** with matching **engine versions** displayed:
 
 - **Camunda 8 Documentation** (`camunda-docs`):
-  - Generates screenshots for each documented version (8.5, 8.6, 8.7, 8.9, etc.)
+  - Generates screenshots for each documented version (8.6, 8.7, 8.8, 8.9, etc.)
   - Each version's screenshots display the corresponding **engine version** (not Modeler version)
   - The latest version (8.9) uses "8.9 (alpha)" as the engine version
   - Screenshots are saved to version-specific directories (e.g., `versioned_docs/version-8.7/` for 8.7 docs, `docs/` for the latest version)
