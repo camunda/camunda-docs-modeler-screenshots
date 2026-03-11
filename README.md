@@ -13,13 +13,14 @@ have been basic UX / Style changes in the Modeler.
 
 ### Version-Specific Screenshots
 
-As of this update, the screenshot generation system automatically creates screenshots for **all documented Camunda platform versions** with matching **engine versions** displayed:
+The screenshot generation system supports creating screenshots with matching **engine versions** displayed for different documentation versions:
 
 - **Camunda 8 Documentation** (`camunda-docs`):
-  - Generates screenshots for each documented version (8.6, 8.7, 8.8, 8.9, etc.)
+  - By default, generates screenshots **only for the latest version** (8.9) to keep CI fast
   - Each version's screenshots display the corresponding **engine version** (not Modeler version)
   - The latest version (8.9) uses "8.9 (alpha)" as the engine version
   - Screenshots are saved to version-specific directories (e.g., `versioned_docs/version-8.7/` for 8.7 docs, `docs/` for the latest version)
+  - To generate for **all documented versions** (8.6, 8.7, 8.8, 8.9), set `GENERATE_ALL_VERSIONS=true` environment variable
 
 - **Camunda 7 Documentation** (`camunda-docs-manual` and `camunda-docs-static`):
   - Uses Camunda 7 engine version "7.24" for all screenshots
@@ -70,19 +71,25 @@ and then potentially commit and push them.
 
 #### Using a Specific Engine Version
 
-To use a specific Camunda 8 engine version for **all** screenshots (overriding the automatic version-specific behavior):
+**Generate for latest version only (default, fastest):**
+```sh
+npm run screenshots
+```
 
+**Generate for latest version with a specific engine version:**
 ```sh
 node lib/takeScreenshots.js --c8-engine-version="8.7"
 ```
 
-For backward compatibility, `--display-version` is still supported and is treated as `--c8-engine-version`:
+**Generate for ALL documented versions (8.6, 8.7, 8.8, 8.9):**
+```sh
+GENERATE_ALL_VERSIONS=true npm run screenshots
+```
 
+For backward compatibility, `--display-version` is still supported and is treated as `--c8-engine-version`:
 ```sh
 node lib/takeScreenshots.js --display-version="8.5"
 ```
-
-This will generate screenshots for only the latest docs version (`docs/` directory) using the specified engine version.
 
 
 ### Script new screenshots
