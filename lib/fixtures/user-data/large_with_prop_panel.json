@@ -11,7 +11,7 @@
       "propertiesPanel": {
         "open": true,
         "width": 420
-        }
+      }
     }
   },
   "window": {
@@ -23,5 +23,6 @@
       "width": 1800,
       "height": 900
     }
-  }
+  },
+  "lastUsedConnection": "NO_CONNECTION"
 }
