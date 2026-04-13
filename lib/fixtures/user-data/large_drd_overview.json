@@ -15,6 +15,9 @@
       }
     }
   },
+  "hints": {
+    "panelToggleDismissed": true
+  },
   "window": {
     "fullScreen": false,
     "maximize": false,
