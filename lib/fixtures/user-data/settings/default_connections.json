@@ -1,0 +1,21 @@
+{
+  "connectionManagerPlugin.c8connections": [
+    {
+      "id": "saas-1",
+      "name": "Dev Cluster",
+      "targetType": "camundaCloud",
+      "camundaCloudClusterUrl": "SECRET_CLUSTER_URL",
+      "contactPoint": "SECRET_CLUSTER_URL",
+      "camundaCloudClientId": "SECRET_CLIENT_ID",
+      "camundaCloudClientSecret": "SECRET_CLIENT_SECRET"
+    },
+    {
+      "id": "c8run",
+      "name": "c8run (local)",
+      "contactPoint": "http://localhost:8080/v2",
+      "operateUrl": "http://localhost:8080/operate",
+      "targetType": "selfHosted",
+      "authType": "none"
+    }
+  ]
+}

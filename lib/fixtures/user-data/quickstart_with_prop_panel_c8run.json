@@ -1,0 +1,33 @@
+{
+  "workspace": {
+    "endpoints": [],
+    "layout": {
+      "dmnOverview": {
+        "open": false
+      },
+      "log": {
+        "open": false
+      },
+      "propertiesPanel": {
+        "open": true,
+        "width": 420,
+        "groups": {
+          "ElementTemplates__CustomProperties": {
+            "open": true
+          }
+        }
+      }
+    }
+  },
+  "lastUsedConnection": "c8run",
+  "window": {
+    "fullScreen": false,
+    "maximize": false,
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 1200,
+      "height": 700
+    }
+  }
+}

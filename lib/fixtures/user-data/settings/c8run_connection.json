@@ -1,0 +1,12 @@
+{
+  "connectionManagerPlugin.c8connections": [
+    {
+      "id": "c8run",
+      "name": "c8run (local)",
+      "contactPoint": "http://localhost:8080/v2",
+      "operateUrl": "http://localhost:8080/operate",
+      "targetType": "selfHosted",
+      "authType": "none"
+    }
+  ]
+}
