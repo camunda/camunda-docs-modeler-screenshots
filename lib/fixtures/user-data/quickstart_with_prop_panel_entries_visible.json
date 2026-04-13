@@ -25,10 +25,10 @@
             "open": true
           }
         }
+      },
+      "variablesSidePanel": {
+        "open": false
       }
-    },
-    "variablesSidePanel": {
-      "open": false
     }
   },
   "hints": {
