@@ -8,9 +8,13 @@
       "log": {
         "open": false
       },
-      "propertiesPanel": {
+      "sidePanel": {
         "open": true,
-        "width": 320
+        "width": 320,
+        "tab": "properties"
+      },
+      "variablesSidePanel": {
+        "open": false
       }
     }
   },
