@@ -8,9 +8,12 @@
       "log": {
         "open": false
       },
-      "propertiesPanel": {
+      "sidePanel": {
         "open": true,
         "width": 420,
+        "tab": "properties"
+      },
+      "propertiesPanel": {
         "groups": {
           "ElementTemplates__CustomProperties": {
             "open": false
@@ -22,6 +25,9 @@
             "open": true
           }
         }
+      },
+      "variablesSidePanel": {
+        "open": false
       }
     }
   },
