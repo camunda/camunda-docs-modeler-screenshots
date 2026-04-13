@@ -51,7 +51,7 @@
   "type": "default",
   "id": "LoanApplicationReview",
   "executionPlatform": "Camunda Cloud",
-  "executionPlatformVersion": "8.7.0",
+  "executionPlatformVersion": "8.9.0",
   "exporter": {
     "name": "Camunda Modeler",
     "version": "5.35.0-dev"
