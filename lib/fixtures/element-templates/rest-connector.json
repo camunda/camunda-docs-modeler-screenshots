@@ -25,7 +25,8 @@
       "type": "Hidden",
       "value": "http",
       "binding": {
-        "type": "zeebe:taskDefinition:type"
+        "type": "zeebe:taskDefinition",
+        "property": "type"
       }
     },
     {
