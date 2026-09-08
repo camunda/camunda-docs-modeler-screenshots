@@ -29,6 +29,16 @@
       }
     },
     {
+      "label": "REST Credential",
+      "description": "Choose a credential to use for the connection",
+      "type": "Configuration",
+      "configurationTemplate": "io.camunda.examples:connection:1",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "connection"
+      }
+    },
+    {
       "label": "REST Endpoint URL",
       "description": "Specify the url of the REST API to talk to.",
       "type": "String",
