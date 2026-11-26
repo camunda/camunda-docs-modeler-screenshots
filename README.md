@@ -104,6 +104,10 @@ npm run lint
 The publisher unit tests use temporary directories and do not download Modeler,
 use cluster credentials, push branches, or create documentation PRs.
 They also run as part of `npm test` and the existing CI suite.
+To check GitHub Actions syntax and reusable workflow references separately, run
+`actionlint .github/workflows/CREATE_SCREENSHOTS.yml .github/workflows/PUBLISH_SCREENSHOTS.yml`
+if actionlint is installed. It does not execute the workflows or verify their
+end-to-end behavior.
 
 ### Use locally
 
