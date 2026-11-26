@@ -1,6 +1,37 @@
 name: Generate Screenshots
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: Desktop Modeler version (leave empty for latest)
+        required: false
+        type: string
+  workflow_call:
+    inputs:
+      version:
+        description: Desktop Modeler version (leave empty for latest)
+        required: false
+        type: string
+      record_provenance:
+        description: Record and upload provenance for a pinned version
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      CAMUNDA_CONSOLE_CLIENT_ID:
+        required: true
+      CAMUNDA_CONSOLE_CLIENT_SECRET:
+        required: true
+      CAMUNDA_CLUSTER_ID:
+        required: true
+      CLUSTER_URL:
+        required: true
+      CLIENT_ID:
+        required: true
+      CLIENT_SECRET:
+        required: true
+      OAUTH_URL:
+        required: true
   push:
 
 jobs:
@@ -34,6 +65,12 @@ jobs:
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         OAUTH_URL: ${{ secrets.OAUTH_URL }}
         MAX_PARALLEL_EXECUTIONS: 5
+        VERSION: ${{ inputs.version }}
+    - name: Record pinned version and artifact inventory
+      if: ${{ inputs.record_provenance }}
+      run: node scripts/publish-screenshots.js record
+      env:
+        VERSION: ${{ inputs.version }}
     - name: Archive Camunda 8 artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -49,4 +86,10 @@ jobs:
       with:
         name: camunda-docs-static
         path: camunda-docs-static
-
+    - name: Archive screenshot provenance
+      if: ${{ inputs.record_provenance }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: screenshot-provenance
+        path: screenshot-provenance.json
+        if-no-files-found: error
