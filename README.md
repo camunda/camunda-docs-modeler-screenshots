@@ -17,6 +17,92 @@ Run the [Generate Screenshots](https://github.com/camunda/camunda-docs-modeler-s
 
 Once it's completed, download the generated artifacts and upload them to the respective `camunda-docs-*` repos.
 
+### Publish review PRs without local downloads
+
+The separate **Publish Screenshots** workflow is manually dispatched from the
+default branch. **Generate Screenshots** is unchanged. The publisher runs the same
+generation commands itself: dispatching the existing workflow cannot pin a version
+or reliably return the exact run ID, so it deliberately does not dispatch that
+workflow or search for the "latest successful" artifacts.
+
+The latest stable Desktop Modeler version is resolved once, passed as `VERSION`,
+and checked against the installed Modeler manifest. Generation must succeed in
+full before a second job can publish. Three screenshot artifacts and a SHA-256
+inventory record the version, source commit, run ID and attempt. The second job
+downloads only this workflow run's artifacts and validates all three inventories
+before preparing any target repository.
+
+For `camunda-docs`, generated `docs/` paths update Next and their existing
+counterparts in every active version in `versions.json`, following
+[camunda/camunda-docs#10641](https://github.com/camunda/camunda-docs/issues/10641).
+Missing versioned paths are listed in the run summary and PR description, not
+created. Archived versions are untouched. The other two repositories retain their
+generated paths. Only generated PNGs are copied; no pages or other assets are
+published.
+
+All three target repositories are prepared before any push. The workflow opens
+separate **draft** PRs, never merges them, and preserves each target's PR template
+when present. A changed or ambiguous template fails preparation rather than being
+silently replaced. Reviewers must check image diffs and decide whether the latest
+Modeler UI is appropriate for each documentation version; successful generation
+is not visual approval.
+
+#### Maintainer setup
+
+Create the `screenshot-publishing` GitHub environment, ideally with required
+reviewers, and add its `DOCS_PUBLISH_TOKEN` secret. Use a fine-grained PAT (or
+equivalent organization-approved bot credential) with **Contents: read/write** and
+**Pull requests: read/write** on `camunda/camunda-docs`,
+`camunda/camunda-docs-static` and `camunda/camunda-docs-manual`, authorized for any
+organization SSO/policies. The source repository's `GITHUB_TOKEN` cannot write
+across repositories. The credential needs access to target templates and labels;
+`camunda-docs` must have its `low prio` label. Repository rules must permit the bot
+to push automation branches and create PRs. Do not grant the publishing credential
+to the generation job.
+
+Configure the same repository-level cluster secrets used by **Generate
+Screenshots**: `CAMUNDA_CONSOLE_CLIENT_ID`, `CAMUNDA_CONSOLE_CLIENT_SECRET`,
+`CAMUNDA_CLUSTER_ID`, `CLUSTER_URL`, `CLIENT_ID`, `CLIENT_SECRET`, and `OAUTH_URL`.
+Allow the workflow's existing setup actions plus
+`peter-evans/create-pull-request@v7`. The source token needs only Contents: read and,
+in the publishing job, Actions: read.
+
+Targets are each repository's current default branch, resolved at preparation
+time (currently `main`, `master`, and `7.24`, respectively). The manual target must
+remain a `7.<minor>` release branch; otherwise preparation stops for a maintainer
+decision. There is no automatic fan-out to older Camunda 7 release branches.
+Changing a default branch is a release-management decision, not a workflow input.
+
+Run **Actions > Publish Screenshots > Run workflow** on the default branch. Each
+target uses the reserved bot-owned branch
+`automation/modeler-screenshots-<modeler-version>`. Repeated runs update the same
+open PR for that version; unchanged targets produce no empty PR. Do not edit those
+branches manually. Repository-wide concurrency serializes publishers without
+cancelling the running one; GitHub may replace an older pending run when another
+dispatch arrives. Original generation runs remain independent and never publish.
+
+Cross-repository PR creation is **not atomic**: a credential/API failure after the
+first PR may leave a subset open and fails the run visibly. Inspect the publishing
+steps and rerun the workflow after fixing the failure; deterministic branches
+allow recovery without duplicate open PRs. Artifacts expire according to repository
+retention, and re-running generation later may select a newer release. Use a new
+dispatch or **Re-run all jobs**, not **Re-run failed jobs**: generation and
+publication must share the same run attempt. This workflow does not trigger on
+releases or schedules and has not been live-tested
+against the docs repositories. A supervised first dispatch is required after
+merging and configuring credentials.
+
+#### Offline publisher checks
+
+```sh
+npm run test:publishing
+npm run lint
+```
+
+The publisher unit tests use temporary directories and do not download Modeler,
+use cluster credentials, push branches, or create documentation PRs.
+They also run as part of `npm test` and the existing CI suite.
+
 ### Use locally
 
 Alternatively, you can run the screenshots generation locally.
