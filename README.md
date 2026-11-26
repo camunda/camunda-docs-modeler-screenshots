@@ -16,21 +16,23 @@ have been basic UX / Style changes in the Modeler.
 Run the [Generate Screenshots](https://github.com/camunda/camunda-docs-modeler-screenshots/actions/workflows/CREATE_SCREENSHOTS.yml) workflow.
 
 Once it's completed, download the generated artifacts and upload them to the respective `camunda-docs-*` repos.
+The optional `version` input selects a Desktop Modeler version; leave it empty to
+use the latest release. Push-triggered runs continue to use the latest release.
 
 ### Publish review PRs without local downloads
 
 The separate **Publish Screenshots** workflow is manually dispatched from the
-default branch. **Generate Screenshots** is unchanged. The publisher runs the same
-generation commands itself: dispatching the existing workflow cannot pin a version
-or reliably return the exact run ID, so it deliberately does not dispatch that
-workflow or search for the "latest successful" artifacts.
+default branch. It calls **Generate Screenshots** as a reusable workflow instead
+of dispatching it or searching for the "latest successful" artifacts. Existing
+push and manual generation remain available.
 
 The latest stable Desktop Modeler version is resolved once, passed as `VERSION`,
 and checked against the installed Modeler manifest. Generation must succeed in
-full before a second job can publish. Three screenshot artifacts and a SHA-256
-inventory record the version, source commit, run ID and attempt. The second job
-downloads only this workflow run's artifacts and validates all three inventories
-before preparing any target repository.
+full before a subsequent job can publish. When called with `record_provenance`,
+generation requires the pinned version and records a SHA-256 inventory before
+uploading artifacts. The inventory records the version, source commit, run ID and
+attempt. The publishing job downloads only this workflow run's artifacts and
+validates all three inventories before preparing any target repository.
 
 For `camunda-docs`, generated `docs/` paths update Next and their existing
 counterparts in every active version in `versions.json`, following
@@ -63,7 +65,8 @@ to the generation job.
 Configure the same repository-level cluster secrets used by **Generate
 Screenshots**: `CAMUNDA_CONSOLE_CLIENT_ID`, `CAMUNDA_CONSOLE_CLIENT_SECRET`,
 `CAMUNDA_CLUSTER_ID`, `CLUSTER_URL`, `CLIENT_ID`, `CLIENT_SECRET`, and `OAUTH_URL`.
-Allow the workflow's existing setup actions plus
+The publishing workflow passes the cluster secrets explicitly to the reusable
+generation workflow. Allow the workflow's existing setup actions plus
 `peter-evans/create-pull-request@v7`. The source token needs only Contents: read and,
 in the publishing job, Actions: read.
 
@@ -85,12 +88,11 @@ Cross-repository PR creation is **not atomic**: a credential/API failure after t
 first PR may leave a subset open and fails the run visibly. Inspect the publishing
 steps and rerun the workflow after fixing the failure; deterministic branches
 allow recovery without duplicate open PRs. Artifacts expire according to repository
-retention, and re-running generation later may select a newer release. Use a new
-dispatch or **Re-run all jobs**, not **Re-run failed jobs**: generation and
-publication must share the same run attempt. This workflow does not trigger on
-releases or schedules and has not been live-tested
-against the docs repositories. A supervised first dispatch is required after
-merging and configuring credentials.
+retention, and a later dispatch may select a newer release. Use a new dispatch for
+retries: generation and publication must share the same run attempt, and re-runs
+may encounter existing immutable artifact names. This workflow does not trigger on
+releases or schedules and has not been live-tested against the docs repositories.
+A supervised first dispatch is required after merging and configuring credentials.
 
 #### Offline publisher checks
 

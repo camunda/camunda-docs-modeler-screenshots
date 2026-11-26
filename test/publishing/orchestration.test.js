@@ -128,6 +128,22 @@ test('rejects a different installed Modeler version', t => {
 });
 
 
+test('rejects provenance recording without a pinned version', t => {
+
+  // given
+  const context = fixture(t);
+  context.env.VERSION = '';
+
+  // when
+  const result = run('record', context);
+
+  // then
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /version\/platform mismatch/);
+  assert.equal(fs.existsSync(path.join(context.root, 'screenshot-provenance.json')), false);
+});
+
+
 test('rejects a missing repository before recording success', t => {
 
   // given

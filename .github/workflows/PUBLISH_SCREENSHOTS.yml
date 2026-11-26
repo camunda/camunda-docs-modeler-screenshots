@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  generate:
+  resolve-version:
     if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -28,49 +28,24 @@ jobs:
       id: version
       run: |
         node -e "require('./lib/helper/helper').fetchLatestModelerVersion().then(version => { if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Expected stable release'); require('node:fs').appendFileSync(process.env.GITHUB_OUTPUT, 'version=' + version + '\n'); })"
-    - uses: bpmn-io/actions/setup@latest
-    - name: Prepare Camunda 8 cluster
-      run: npm run prepare-cluster
-      env:
-        CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
-        CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
-        CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
-    - name: Generate all screenshots
-      run: xvfb-run npm run start:ci
-      env:
-        VERSION: ${{ steps.version.outputs.version }}
-        CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        OAUTH_URL: ${{ secrets.OAUTH_URL }}
-        MAX_PARALLEL_EXECUTIONS: 5
-    - name: Record version and complete artifact inventory
-      run: node scripts/publish-screenshots.js record
-      env:
-        VERSION: ${{ steps.version.outputs.version }}
-    - uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs
-        path: camunda-docs
-        if-no-files-found: error
-    - uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs-static
-        path: camunda-docs-static
-        if-no-files-found: error
-    - uses: actions/upload-artifact@v4
-      with:
-        name: camunda-docs-manual
-        path: camunda-docs-manual
-        if-no-files-found: error
-    - uses: actions/upload-artifact@v4
-      with:
-        name: screenshot-provenance
-        path: screenshot-provenance.json
-        if-no-files-found: error
+
+  generate:
+    needs: resolve-version
+    uses: ./.github/workflows/CREATE_SCREENSHOTS.yml
+    with:
+      version: ${{ needs.resolve-version.outputs.version }}
+      record_provenance: true
+    secrets:
+      CAMUNDA_CONSOLE_CLIENT_ID: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_ID }}
+      CAMUNDA_CONSOLE_CLIENT_SECRET: ${{ secrets.CAMUNDA_CONSOLE_CLIENT_SECRET }}
+      CAMUNDA_CLUSTER_ID: ${{ secrets.CAMUNDA_CLUSTER_ID }}
+      CLUSTER_URL: ${{ secrets.CLUSTER_URL }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      OAUTH_URL: ${{ secrets.OAUTH_URL }}
 
   publish:
-    needs: generate
+    needs: [ resolve-version, generate ]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: screenshot-publishing
@@ -93,7 +68,7 @@ jobs:
       run: node scripts/publish-screenshots.js prepare
       env:
         GH_TOKEN: ${{ secrets.DOCS_PUBLISH_TOKEN }}
-        VERSION: ${{ needs.generate.outputs.version }}
+        VERSION: ${{ needs.resolve-version.outputs.version }}
     - name: Propose Camunda 8 screenshots
       id: docs
       uses: peter-evans/create-pull-request@v7
@@ -101,7 +76,7 @@ jobs:
         token: ${{ secrets.DOCS_PUBLISH_TOKEN }}
         path: targets/camunda-docs
         base: ${{ fromJSON(steps.prepare.outputs.bases).camunda-docs }}
-        branch: automation/modeler-screenshots-${{ needs.generate.outputs.version }}
+        branch: automation/modeler-screenshots-${{ needs.resolve-version.outputs.version }}
         title: 'docs(modeler): refresh Desktop Modeler screenshots'
         commit-message: 'docs(modeler): refresh screenshots across active documentation versions'
         body-path: publishing-bodies/camunda-docs.md
@@ -114,7 +89,7 @@ jobs:
         token: ${{ secrets.DOCS_PUBLISH_TOKEN }}
         path: targets/camunda-docs-static
         base: ${{ fromJSON(steps.prepare.outputs.bases).camunda-docs-static }}
-        branch: automation/modeler-screenshots-${{ needs.generate.outputs.version }}
+        branch: automation/modeler-screenshots-${{ needs.resolve-version.outputs.version }}
         title: 'docs(modeler): refresh Desktop Modeler screenshots'
         commit-message: 'docs(modeler): refresh Desktop Modeler screenshots'
         body-path: publishing-bodies/camunda-docs-static.md
@@ -126,7 +101,7 @@ jobs:
         token: ${{ secrets.DOCS_PUBLISH_TOKEN }}
         path: targets/camunda-docs-manual
         base: ${{ fromJSON(steps.prepare.outputs.bases).camunda-docs-manual }}
-        branch: automation/modeler-screenshots-${{ needs.generate.outputs.version }}
+        branch: automation/modeler-screenshots-${{ needs.resolve-version.outputs.version }}
         title: 'docs(modeler): refresh Desktop Modeler screenshots'
         commit-message: 'docs(modeler): refresh Desktop Modeler screenshots'
         body-path: publishing-bodies/camunda-docs-manual.md
