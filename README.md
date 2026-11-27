@@ -70,11 +70,13 @@ generation workflow. Allow the workflow's existing setup actions plus
 `peter-evans/create-pull-request@v7`. The source token needs only Contents: read and,
 in the publishing job, Actions: read.
 
-Targets are each repository's current default branch, resolved at preparation
-time (currently `main`, `master`, and `7.24`, respectively). The manual target must
-remain a `7.<minor>` release branch; otherwise preparation stops for a maintainer
-decision. There is no automatic fan-out to older Camunda 7 release branches.
-Changing a default branch is a release-management decision, not a workflow input.
+`camunda-docs` and `camunda-docs-static` target their current default branches,
+resolved at preparation time (currently `main` and `master`). The
+`camunda-docs-manual` PR targets `master`, regardless of its default branch,
+following recent screenshot PRs. If `master` is unavailable, preparation fails.
+It does not automatically update `7.24` or other release branches. The manual's
+native 7.24 Stage publishing uses the separate `7.24` branch; updating `master`
+alone therefore does not update that published release.
 
 Run **Actions > Publish Screenshots > Run workflow** on the default branch. Each
 target uses the reserved bot-owned branch

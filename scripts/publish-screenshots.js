@@ -170,9 +170,7 @@ function prepare() {
     if (repo === 'camunda-docs') {
       api(`repos/${fullName}/labels/low%20prio`);
     }
-    const base = info.default_branch;
-    assert(repo !== 'camunda-docs-manual' || /^7\.\d+$/.test(base),
-      `Manual default is not a release branch: ${base}`);
+    const base = repo === 'camunda-docs-manual' ? 'master' : info.default_branch;
     bases[repo] = base;
     const target = `targets/${repo}`;
     git([ 'clone', '--depth=1', '--branch', base, `https://github.com/${fullName}.git`, target ]);

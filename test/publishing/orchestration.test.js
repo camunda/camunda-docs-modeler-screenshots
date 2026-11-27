@@ -70,7 +70,7 @@ if (endpoint.endsWith('/labels/low%20prio')) {
   const branches = { 'camunda-docs': 'main', 'camunda-docs-static': 'master', 'camunda-docs-manual': '7.24' };
   if (!branches[repo]) throw new Error('Unexpected API call: ' + endpoint);
   console.log(JSON.stringify({
-    default_branch: repo === 'camunda-docs-manual' && process.env.INVALID_RELEASE ? 'main' : branches[repo],
+    default_branch: branches[repo],
     permissions: { push: !process.env.DENY_PUSH }
   }));
 }
@@ -81,7 +81,12 @@ const path = require('node:path');
 const args = process.argv.slice(2);
 if (args[2] !== 'clone') throw new Error('Only clone permitted');
 const target = args.at(-1);
+if (target.endsWith('/camunda-docs-manual') && process.env.MISSING_MANUAL_MASTER) {
+  process.stderr.write('Manual master branch not found');
+  process.exit(1);
+}
 fs.mkdirSync(target, { recursive: true });
+fs.writeFileSync(path.join(target, '.cloned-branch'), args[args.indexOf('--branch') + 1]);
 if (target.endsWith('/camunda-docs')) {
   fs.writeFileSync(path.join(target, 'versions.json'), JSON.stringify(['8.10', '8.9']));
   fs.mkdirSync(path.join(target, '.github'));
@@ -233,25 +238,25 @@ test('fails preparation when the token cannot push', t => {
 });
 
 
-test('does not silently switch manual publishing away from a release branch', t => {
+test('fails preparation when the manual master branch is unavailable', t => {
 
   // given
   const context = fixture(t);
   generated(context);
   mockRemotes(context);
-  context.env.INVALID_RELEASE = 'true';
+  context.env.MISSING_MANUAL_MASTER = 'true';
 
   // when
   const result = run('prepare', context);
 
   // then
   assert.notEqual(result.status, 0);
-  assert.match(result.stderr, /Manual default is not a release branch/);
+  assert.match(result.stderr, /Manual master branch not found/);
   assert.equal(fs.existsSync(context.env.GITHUB_OUTPUT), false);
 });
 
 
-test('prepares all targets offline with runtime defaults, skips and preserved template', t => {
+test('prepares manual master and other target defaults with skips and preserved template', t => {
 
   // given
   const context = fixture(t);
@@ -264,7 +269,9 @@ test('prepares all targets offline with runtime defaults, skips and preserved te
   // then
   assert.equal(result.status, 0, result.stderr);
   assert.match(fs.readFileSync(context.env.GITHUB_OUTPUT, 'utf8'),
-    /bases={"camunda-docs":"main","camunda-docs-static":"master","camunda-docs-manual":"7.24"}/);
+    /bases={"camunda-docs":"main","camunda-docs-static":"master","camunda-docs-manual":"master"}/);
+  assert.equal(fs.readFileSync(path.join(context.root, 'targets/camunda-docs-manual/.cloned-branch'), 'utf8'), 'master');
+  assert.match(fs.readFileSync(path.join(context.root, 'publishing-bodies/camunda-docs-manual.md'), 'utf8'), /Target: `master`/);
   for (const [ repo, file ] of Object.entries(repositories)) {
     assert.deepEqual(fs.readFileSync(path.join(context.root, 'targets', repo, file)), png);
   }
